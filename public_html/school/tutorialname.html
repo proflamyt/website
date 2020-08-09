@@ -1,0 +1,35 @@
+{% extends "school/base.html" %}
+
+{% block body %}
+{% load crispy_forms_tags %}
+
+
+
+<h3 class="tittle">
+					<span>C</span>reate 
+					<span>C</span>ourse <span>N</span>ame 
+				</h3>
+<form action="{% url 'tutname' %}" method="post">
+
+{% csrf_token %}
+
+{{ name |crispy }}
+
+<input type="submit" value="Submit">
+
+
+
+</form>
+
+
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+{% endblock%}

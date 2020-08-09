@@ -1,0 +1,123 @@
+
+
+
+{% extends "school/base.html" %}
+
+{% load static %}
+
+{% block body %}
+
+<link rel="stylesheet" type="text/css" href="{% static 'profile/profile.css' %}">
+<style>
+p.uppercase {
+  text-transform: uppercase;
+}
+
+p.lowercase {
+  text-transform: lowercase;
+}
+
+p.capitalize {
+  text-transform: capitalize;
+}
+</style>
+<!------ Include the above in your HEAD tag ---------->
+</head>
+	<div class="inner_page_agile">
+
+	</div>
+	<!--//banner -->
+	<!-- short-->
+	<div class="services-breadcrumb">
+		<div class="inner_breadcrumb">
+			<ul class="short_ls">
+				<li>
+					<a href="{% url 'index' %}">Home</a>
+					<span>| |</span>
+				</li>
+				<li>Courses</li>
+			</ul>
+		</div>
+	</div>
+	<!-- //short-->
+	<!-- blog -->
+	<div class="blog-cource">
+		<div class="container">
+			<div class="title-div">
+				<h3 class="tittle">
+					<span>P</span>rofile
+					<span>D</span>etails
+				</h3>
+				<div class="tittle-style">
+
+				</div>
+			</div>
+			<div class="blog-info">
+				<div class="col-xs-4 blog-grid-img">
+					<a href="#"><img src="{{ user.profile.profile_image.url }}" class="img-responsive" alt="" /> </a>
+					<div class="profile-usertitle">
+					<div class="profile-usertitle-name">
+						{{ user.get_username }}
+					</div>
+					<div  class="lowercase" class="profile-usertitle-job">
+						{{ user.email }}
+					</div>
+				</div>
+				</div>
+				<div class="col-xs-8 blog-grid-text">
+					<h4>About Me</h4>
+					<h6>About Me</h6>
+					<p>{{user.profile.about_me}} </p>
+
+
+						<div class="col-md-5">
+			{% if user.is_authenticated %}
+          
+			   <ul>
+  
+  			Favorite book:
+  				{% for book in user.profile.favorite.all %}
+              <li>   
+
+              	<a href="{{book.get_absolute_url}}">{{  book.title }}</a><br>
+              </li>  
+  
+               
+				</ul>
+                {% endfor %}
+           
+            {% endif %}
+            <a class="button-style" href="{% url 'upload' %}">Upload Book</a>
+        </div>
+						
+				</div>
+			</div>
+		</div>
+	</div>
+
+				
+				
+				<!-- END SIDEBAR USER TITLE -->
+				<!-- SIDEBAR BUTTONS -->
+				
+			
+				<!-- END SIDEBAR BUTTONS -->
+				<!-- SIDEBAR MENU -->
+				<div class="profile-usermenu">
+				
+
+							
+							<i class="glyphicon glyphicon-flag"></i>
+							<a href="{% url 'edit' %}">EditProfile </a>
+						
+				</div>
+				<!-- END MENU -->
+			
+	<script src=" {% static 'js/jquery-2.1.4.min.js' %}"></script>
+	<!-- bootstrap -->
+	<script src="{% static 'js/bootstrap.js' %}"></script>
+	
+	<script src="{% static 'js/numscroller-1.0.js' %}"></script>
+       
+		
+	{% endblock %}

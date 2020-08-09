@@ -1,0 +1,554 @@
+<!--
+
+	Author: W3layouts
+	Author URL: http://w3layouts.com
+	License: Creative Commons Attribution 3.0 Unported
+	License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+
+
+<!DOCTYPE html>
+<html lang="zxx">
+{% load static %}
+<head>
+	<title>Course</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<meta name="keywords" content="Weblog a Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<link href=" {% static 'ok/css/bootstrap.css' %}"rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" href=" {% static 'ok/css/single.css'%}">
+	<link href=" {% static 'ok/css/style.css'%}" rel='stylesheet' type='text/css' />
+	<link href=" {% static '/ok/css/fontawesome-all.css'%}" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
+	    rel="stylesheet">
+</head>
+
+	<!--Header-->
+
+
+	<!--//header-->
+<body>
+	<!--Header-->
+
+	<header>
+		<div class="top-bar_sub_w3layouts container-fluid">
+			<div class="row">
+				<div class="col-md-4 logo text-left">
+					<a class="navbar-brand" href="{% url 'index' %}">
+						<i class="fa fa-book"></i> cHowTV</a>
+				</div>
+				<div class="col-md-4 top-forms text-center mt-lg-3 mt-md-1 mt-0">
+					<span>Welcome {{user.username}}</span>
+					<span class="mx-lg-4 mx-md-2  mx-1">
+						{% if user.profile %}
+						<a href="{% url 'profile' %}">
+							<i class="fas fa-user"></i> View Your Profile</a>
+
+						{% else %}
+						<a href="{% url 'author' %}">
+							<i class="fas fa-user"></i> Become an Author</a>
+						
+						{% endif %}
+					</span>
+					
+				</div>
+				<div class="col-md-4 log-icons text-right">
+
+					<ul class="social_list1 mt-3">
+
+						<li>
+							<a href="https://facebook.com/cHowTv1" class="facebook1 mx-2">
+								<i class="fab fa-facebook-f"></i>
+
+							</a>
+						</li>
+						<li>
+							<a href="https://twitter.com/cHowTv1" class="twitter2">
+								<i class="fab fa-twitter"></i>
+
+							</a>
+						</li>
+						<li>
+							<a href="https://instagram.com/how_tv" class="dribble3 mx-2">
+								<i class="fab fa-instagram"></i>
+							</a>
+						</li>
+						<li>
+							<a href="https://api.whatsapp.com/+2348025729256" class="pin">
+								<i class="fab fa-whatsapp"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="header_top" id="home">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light">
+				<button class="navbar-toggler navbar-toggler-right mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+				</button>
+
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item ">
+								<a class="nav-link" href="{% url 'index' %}">Home
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'about' %}">About</a>
+						</li>
+			
+						
+					</ul>
+
+					<form action="{% url 'display' %}" method="post" class="form-inline my-2 my-lg-0 header-search"> 	{% csrf_token %}
+						<input class="form-control mr-sm-2" type="search" placeholder="Search Courses here..." name="bar" required="">
+						<button class="btn btn1 my-2 my-sm-0" type="submit">
+							<i class="fas fa-search"></i>
+						</button>
+					</form>
+
+
+
+				</div>
+			</nav>
+
+		</div>
+	</header>
+	<!--//header-->
+	<div class="banner-inner">
+	</div>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a href="{% url 'index' %}">Home</a>
+		</li>
+		<li class="breadcrumb-item active">Course</li>
+	</ol>
+
+	<!--//banner-->
+	<section class="banner-bottom">
+		<!--/blog-->
+		<div class="container">
+
+			<div class="row">
+				<!--left-->
+					
+
+	<!--/main-->
+	{% if novel %}
+	<section class="main-content-w3layouts-agileits">
+		<div class="container">
+			<h3 class="tittle"><span>C</span>ourse <span>R</span>elating to '{{name}}'</h3>
+			<div class="inner-sec">
+				<!--left-->
+				<div class="left-blog-info-w3layouts-agileits text-left">
+					<div class="row">
+						
+						{% for book in novel %}
+						<div class="col-lg-4 card">
+							<a href="{% url 'index' %}">
+								<img src="{{book.bookImage.url}}" class="card-img-top img-fluid" alt="">
+							</a>
+							<div class="card-body">
+								<ul class="blog-icons my-4">
+							</ul>
+								<h5 class="card-title">
+									
+								</h5>
+									{% if popular.premium == False %}
+								<p class="card-text mb-3">Free</p>
+								{% else %}
+								<p class="card-text mb-3">Premium </p>
+
+								{% endif %}
+								<a href="{% url 'join' book.id %}" class="btn btn-primary read-m"> <i class="fa fa-download"></i> Check Course</a>
+							</div>
+						</div>
+					{% endfor %}
+
+
+
+
+					{% else %}
+
+						<h3 class="tittle" style="float: right"><span>N</span>o <span>C</span>ourse <span>R</span>elating to '{{name}}'</h3>
+						{% endif %}
+					
+
+
+
+
+	
+
+					</div>
+				
+		{% if novel.has_other_pages %}
+						<nav aria-label="Page navigation example">
+							<ol class="pagination justify-content-left mt-4">
+								{% if novel.has_previous %}
+								<li class="page-item ">
+									<a class="page-link" href="?page = {{novel.previous_page_number }}" tabindex="-1">Previous</a>
+								</li>
+								{% else %}
+							
+									<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1">Previous</a>
+								</li>
+								{% endif %}
+
+								{% for i in novel.paginator.page_range %}
+									{% if novel.number == i %}
+								<li class="page-item active">
+								<a class="page-link" href="#" >{{i}}</a>
+								</li>
+								{% else %}
+								<li class="page-item ">
+									<a class="page-link" href="?page={{ i }}">{{i}}</a>
+								</li>
+
+								{% endif %}
+								{% endfor %}
+
+
+								{%  if novel.has_next %}
+								<li class="page-item">
+									<a class="page-link" href="?page={{novel.next_page_number}}">Next</a>
+								</li>
+								<li class="page-item">
+									<a class="page-link" href="?page={{novel.paginator.num_pages}}">Last</a>
+								</li>
+								{%else %}
+								<li class="page-item disabled">
+									<a class="page-link" href="#" >Next</a>
+								</li>
+								{% endif %}
+							</ol>
+							{% endif %}
+						</nav>
+					
+				</div>
+			</div>
+		</div>
+	</section>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	<!--/main-->
+	<section class="main-content-w3layouts-agileits">
+		<div class="container">
+			<h3 class="tittle"> <span>P</span>opular <span>C</span>ourses</h3>
+			<div class="inner-sec">
+				<!--left-->
+				<div class="left-blog-info-w3layouts-agileits text-left">
+					<div class="row">
+						{% for popular in top %}
+
+						<div class="col-lg-4 card">
+							<a href="single.html">
+								<img src="{{ popular.bookImage.url }}" class="card-img-top img-fluid" alt="">
+							</a>
+							<div class="card-body">
+							
+								<h5 class="card-title ">
+									<a href="{% url 'about_books' popular.id %}">{{ popular.course_name.sel}}</a>
+								</h5>
+								{% if popular.premium == False %}
+								<p class="card-text mb-3">Free</p>
+								{% else %}
+								<p class="card-text mb-3">Premium </p>
+
+								{% endif %}
+								<a href="{% url 'join' popular.id  %}" class="btn btn-primary read-m"> <i class="fa fa-download"></i> View Course </a>
+						</div>
+						</div>
+						{% endfor %}
+
+					</div>
+					{% if top.has_other_pages %}
+						<nav aria-label="Page navigation example">
+							<ul class="pagination justify-content-left mt-4">
+								{% if top.has_previous %}
+								<li class="page-item ">
+									<a class="page-link" href="?page = {{top.previous_page_number }}" tabindex="-1">Previous</a>
+								</li>
+								{% else %}
+							
+									<li class="page-item disabled">
+									<a class="page-link" href="#" tabindex="-1">Previous</a>
+								</li>
+								{% endif %}
+
+								{% for i in top.paginator.page_range %}
+									{% if top.number == i %}
+								<li class="page-item active">
+								<a class="page-link" href="#" >{{i}}</a>
+								</li>
+								{% else %}
+								<li class="page-item ">
+									<a class="page-link" href="?page={{i|urlencode }}">{{i}}</a>
+								</li>
+
+								{% endif %}
+								{% endfor %}
+
+
+								{%  if top.has_next %}
+								<li class="page-item">
+									<a class="page-link" href="?page={{top.next_page_number}}">Next</a>
+								</li>
+								<li class="page-item">
+									<a class="page-link" href="?page={{top.paginator.num_pages}}">Last</a>
+								</li>
+								{%else %}
+								<li class="page-item disabled">
+									<a class="page-link" href="#" >Next</a>
+								</li>
+								{% endif %}
+							</ul>
+							{% endif %}
+						</nav>
+					</div>
+
+					<!--//left-->
+				</div>
+			</div>
+		</div>
+	</div>
+	</section>
+
+<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+					<h3>About US</h3>
+					<p>We offer you the opportunity to tap from this reforming resource from modern tech innovators in
+creating facilitating and engaging educational experiences yet to be explored from the four walls
+of the classroom....</p>
+					<div class="read">
+						<a href="{% url 'about'  %}" class="btn btn-primary read-m">Read More</a>
+					</div>
+				</div>
+				<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+
+					<div class="tech-btm">
+						<h3>Latest Books</h3>
+
+						<div class="blog-grids row mb-3">
+
+							{% for book in footer %}
+							<div class="col-md-5 blog-grid-left">
+								<a href="{% url 'about_books' book.id  %}">
+									<img src="{{book.bookImage.url}}" class="img-fluid" alt="">
+								</a>
+							</div>
+							{% endfor %}
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index'  %}">Hello {{ user.get_username }} </a>
+								</h5>
+								<
+							</div>
+
+						</div>
+						<div class="blog-grids row mb-3">
+							<div class="col-md-5 blog-grid-left">
+								<a href="{% url 'index'%}">
+									<img src="images/5.jpg" class="img-fluid" alt="">
+								</a>
+							</div>
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index' %}"> Checked out our courses yet ? {{ user.username }} </a>
+								</h5>
+								<div class="sub-meta">
+									<span>
+										
+								</div>
+							</div>
+
+						</div>
+						<div class="blog-grids row mb-3">
+							<div class="col-md-5 blog-grid-left">
+								<a href="{% url 'index'  %}">
+									<img src="images/6.jpg" class="img-fluid" alt="">
+								</a>
+							</div>
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index'  %}"> Welcome To cHowTV , We are .... </a>
+								</h5>
+								<div class="sub-meta">
+									<span>
+										<i class="far fa-clock"></i> 20 Jan, 2018</span>
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- subscribe -->
+				
+			</div>
+			<!-- footer -->
+			<div class="footer-cpy text-center">
+				<div class="footer-social">
+					<div class="copyrighttop">
+						<ul>
+							<li class="mx-3">
+								<a class="facebook" href="https://facebook.com/cHowTv1">
+									<i class="fab fa-facebook-f"></i>
+									<span>Facebook</span>
+								</a>
+							</li>
+							<li>
+								<a class="facebook" href="https://twitter.com/cHowTv1">
+									<i class="fab fa-twitter"></i>
+									<span>Twitter</span>
+								</a>
+							</li>
+							<li class="mx-3">
+								<a class="facebook" href="https://instagram.com/how_tv">
+									<i class="fab fa-instagram"></i>
+									<span>Instagram</span>
+								</a>
+							</li>
+							<li>
+								<a class="facebook" href="https://api.whatsapp.com/+2348025729256">
+									<i class="fab fa-whatsapp"></i>
+									<span>WhatsApp</span>
+								</a>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+
+			</div>
+
+			<!-- //footer -->
+
+
+		</div>
+	</footer>
+
+
+	
+	<!---->
+	<!-- js -->
+	<script src=" {% static 'ok/js/jquery-2.2.3.min.js' %} "></script>
+	<!-- //js -->
+	<!--/ start-smoth-scrolling -->
+	<script src=" {% static 'ok/js/move-top.js' %}  "></script>
+	<script src=" {% static 'ok/js/easing.js' %} "></script>
+	<script>
+		jQuery(document).ready(function ($) {
+			$(".scroll").click(function (event) {
+				event.preventDefault();
+				$('html,body').animate({
+					scrollTop: $(this.hash).offset().top
+				}, 900);
+			});
+		});
+	</script>
+	<!--// end-smoth-scrolling -->
+
+	<script>
+		$(document).ready(function () {
+			/*
+									var defaults = {
+							  			containerID: 'toTop', // fading element id
+										containerHoverID: 'toTopHover', // fading element hover id
+										scrollSpeed: 1200,
+										easingType: 'linear' 
+							 		};
+									*/
+
+			$().UItoTop({
+				easingType: 'easeOutQuart'
+			});
+
+		});
+	</script>
+	<a href="#home" class="scroll" id="toTop" style="display: block;">
+		<span id="toTopHover" style="opacity: 1;"> </span>
+	</a>
+
+	<!-- //Custom-JavaScript-File-Links -->
+	<script src=" {% static 'ok/js/bootstrap.js' %}"></script>
+
+
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

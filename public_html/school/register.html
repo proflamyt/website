@@ -1,0 +1,125 @@
+
+{% extends "school/base.html" %}
+
+	{% block body %}
+	{% load crispy_forms_tags %}
+	<!-- header -->
+
+	<!-- banner -->
+	<div class="inner_page_agile">
+
+	</div>
+	<!--//banner -->
+	<!-- short-->
+	<div class="services-breadcrumb">
+		<div class="inner_breadcrumb">
+			<ul class="short_ls">
+				<li>
+					<a href="{% url 'index' %}">Home</a>
+					<span>| |</span>
+				</li>
+				<li>Register</li>
+			</ul>
+		</div>
+	</div>
+	<!-- //short-->
+	<div class="register-form-main">
+		<div class="container">
+			<div class="title-div">
+				<h3 class="tittle">
+					<span>R</span>egister
+					<span>F</span>orm
+				</h3>
+				<div class="tittle-style">
+
+				</div>
+			</div>
+			<div class="login-form">
+
+				<form action="{% url 'register' %}" method="post">
+
+					{% csrf_token %}
+					
+					<div class="">
+						<p>User Name </p>
+						<input type="text" class="name" name="username" required="" />
+					</div>
+					<div class="">
+						<p>E-mail</p>
+						<input type="email" class="password" name="email" required="" />
+					</div>
+					<div class="">
+						<p>Password</p>
+						<input type="password" class="password" name="password1" id="password1" required="" />
+					</div>
+					<div class="">
+						<p>Confirm Password</p>
+						<input type="password" class="password" name="password2" id="password2" required="" />
+					</div>
+					<label class="anim">
+						<input type="checkbox" class="checkbox">
+						<span>I Accept Terms & Conditions</span>
+					</label>
+					<input type="submit" value="Register">
+					{% if errors is not None %}
+
+					{{ errors }}
+
+					{% endif %}
+				</form>
+			</div>
+
+		</div>
+	</div>
+
+
+	<!-- js files -->
+	<!-- js -->
+	<script src="static/js/jquery-2.1.4.min.js"></script>
+	<!-- bootstrap -->
+	<script src="static/js/bootstrap.js"></script>
+	<!-- smooth scrolling -->
+	<script src="static/js/SmoothScroll.min.js"></script>
+	<script src="static/js/move-top.js"></script>
+	<script src="static/js/easing.js"></script>
+	<!-- here stars scrolling icon -->
+	<script>
+		$(document).ready(function () {
+			
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			
+
+			$().UItoTop({
+				easingType: 'easeOutQuart'
+			});
+
+		});
+	</script>
+	<!-- //here ends scrolling icon -->
+	<!-- smooth scrolling -->
+	<!-- password-script -->
+	<script>
+		window.onload = function () {
+			document.getElementById("password1").onchange = validatePassword;
+			document.getElementById("password2").onchange = validatePassword;
+		}
+
+		function validatePassword() {
+			var pass2 = document.getElementById("password2").value;
+			var pass1 = document.getElementById("password1").value;
+			if (pass1 != pass2)
+				document.getElementById("password2").setCustomValidity("Passwords Don't Match");
+			else
+				document.getElementById("password2").setCustomValidity('');
+			//empty string means no validation error
+		}
+	</script>
+	<!-- //password-script -->
+	<!-- //js-files -->
+
+{% endblock %}

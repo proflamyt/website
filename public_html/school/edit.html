@@ -1,0 +1,112 @@
+{% extends "school/base.html" %}
+
+<!-- title -->
+{% block body %}
+
+{% load static %}
+{% load crispy_forms_tags %}
+
+<div class="container-fluid">
+
+
+
+
+  <div class="row">
+   <div class="title-div">
+        <h3 class="tittle">
+          <span>E</span>Dit
+          <span>D</span>etails
+        </h3>
+        <div class="tittle-style">
+
+        </div>
+      </div>
+  </div>
+  
+    <div class="row">
+      <form method="post" action="{% url 'edit' %}" enctype="multipart/form-data"> 
+          {% csrf_token %}
+
+      <div class="col-xs-3 blog-grid-img">
+          <img src="{{ user.profile.profile_image.url }}" style="" class="img-responsive" alt="" />
+         <div>  {{ profile_form.profile_image  }}  </div> 
+        </div>
+      <div class="col-lg-5 col-centered">
+        
+        
+          <label class="header">About Me</label>
+          {{ profile_form.about_me }}
+<br>
+          <div class="clearfix"> 
+<div class="styled-input agile-styled-input-top">
+            
+           <label class="header">Your Favorite Book</label>
+
+            <div class="styled-input agile-styled-input-top">
+              
+            <div class="col-md-6 dropdown ">
+              <button class="btn btn-primary dropdown-toggle" type="button" data-toggle='dropdown'>
+            {{ profile_form.favorite.label_tag }} Novel
+            <span class="caret"></span>             
+
+              </button>
+              <div class="dropdown-menu"> 
+                <ul>
+                  <li>
+                    {{ profile_form.favorite }}
+            </li>
+                </ul>
+            
+          </div>
+          </div>
+          </div>
+
+          </div>
+
+          </div>
+
+          
+
+     
+<br>
+
+              <div class="form-group">
+            <label class="col-md-3 control-label"></label>
+            <div class="col-md-8">
+              <input type="submit" class="btn btn-primary" value="Save Changes">
+              <span></span>
+              
+              <!-- <input type="reset" class="btn btn-default" value="Cancel"> -->
+              <a href="{% url 'profile' %}" class="btn btn-default" value="Cancel">Cancel</a>
+              <!-- <div class="input"><a href="{% url 'profile' %}"></a></div> -->
+
+
+              <br>
+            </div>
+          </div>
+
+        </form>
+
+        <br>
+        <br>
+        <br>
+        <br>
+      </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+  <script src=" {% static 'js/jquery-2.1.4.min.js' %}"></script>
+  <!-- bootstrap -->
+  <script src="{% static 'js/bootstrap.js' %}"></script>
+  
+  <script src="{% static 'js/numscroller-1.0.js' %}"></script>
+{% endblock %}
