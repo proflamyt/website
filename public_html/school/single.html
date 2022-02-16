@@ -1,0 +1,307 @@
+{% extends "school/baseprod.html" %}
+
+{% block body %}
+{% load ratings %}
+
+<style type="text/css">
+	h3.tittle {
+	text-align: center;
+	font-size: 2.5em;
+	color: #2c363e;
+	text-shadow: 0 1px 2px rgba(0, 0, 0, 0.37);
+	font-weight: 600;
+}
+</style>
+      <!-- Breadcrumbs -->
+      <section class="bg-gray-7">
+        <div class="breadcrumbs-custom bg-image" style="background-image: url(static/images/1.jpg);">
+          <div class="container">
+           
+          </div>
+        </div>
+        <div class="container">
+          <ul class="breadcrumbs-custom-path">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li class="active">{{ book.title|title }}</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Grid Blog-->
+      <section class="section section-lg bg-default">
+        <div class="container">
+          <div class="row row-60 row-xl-75">
+            <div class="col-lg-8">
+              <div class="single-post section-style-2">
+                <h3 class="text-spacing-50 font-weight-bold tittle text-transform-none">{{ book.title | title }}</h3>
+                <div class="group-md group-middle">
+                  <time class="post-classic-time" datetime="{{ book.date_uploaded}}">{{ book.date_uploaded}}</time>
+                  <div>
+                    <ul class="list-inline list-inline-xl post-classic-info">
+                      <li class="post-classic-author"><span class="icon mdi mdi-account-outline"></span><span>by <a href="{% url 'profile' book.author.id %}">{{book.author.authorName | title }} </a> </span></li>
+                      
+                    </ul>
+                  </div>
+                </div>
+                <br>
+                <a href="{% url 'about_books' book.id %}">
+                  <img src='{{ book.bookImage.url }}'  style="width: 150px; height: 200px;" class="img-fluid shadow-lg" alt="pics">
+                </a>
+                <p>
+                	<div class="single-post-footer">
+                  <div class="group-lg group-sm-justify">
+                   
+                    <div>
+                      <ul class="list-inline single-post-social-list list-inline-md">
+                    
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+                 <b> Synopsis </b></p>
+                <p>{{ book.summary | safe }}</p>
+                  <p id="demo">
+            <iframe id='iframeh' src="https://docs.google.com/gview?url=seehowtv.com{{ book.bookFile.url }}&embedded=true" style=" width:100%; height:300vh; border: none;"> your browser doesnt support iframe </iframe>
+             </p>
+                <!-- Quote Classic-->
+               <div class="single-post-title"> {% ratings book %}</div>
+                <div class="unit unit-spacing-xl flex-column flex-md-row flex-lg-column flex-xl-row">
+                  <div class="unit-left"><img src="{{ book.author.profile_image.url }}" class="rounded-circle" alt="" style="width:200px;height: 200px">                  </div>
+                  <div class="unit-body">
+                    <p>{{book.author.about_me }}</p>
+                  </div>
+                </div>
+
+
+
+                <div class="single-post-footer">
+                  <div class="group-lg group-sm-justify">
+                    <h5 class="text-transform-none font-weight-normal">Share this post</h5>
+                    <div>
+                      <ul class="list-inline single-post-social-list list-inline-md">
+                     <div class="sharethis-inline-share-buttons"></div>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+
+              </div>
+              {% if book.author.favorite %}
+              <div class="single-post-title">Related Posts</div>
+              
+              <div class="row row-lg row-30 justify-content-center">
+{% for favourite in book.author.favorite.values %}
+                <div class="col-sm-6">
+                  <!-- Post Classic-->
+                  <article class="post post-classic post-classic-2">
+                    <div class="post-classic-figure"><img src="/media/{{favourite.bookImage }}" alt="" width="370" height="365"/>
+                    </div>
+                    <div class="post-classic-content">
+                      <p class="post-classic-title"><a href="{% url 'about_books' favourite.id %}">{{ favourite.title | title }}</a>
+                      </p>
+                    </div>
+                    <time class="post-classic-time" datetime="{{ favourite.date_uploaded}}">{{ favourite.date_uploaded}}</time>
+                  </article>
+                </div>
+
+               {% endfor %}
+              </div>
+{% endif %}
+
+
+              
+              
+          
+            </div>
+            <div class="col-lg-4">
+              <div class="inset-left-xl-40">
+                <div class="aside row row-60 row-xl-75">
+                  <div class="aside-item col-12">
+                    <!-- RD Search Form-->
+                    <form class="form-search rd-search form-search" action="{% url 'download' %}" method="POST">
+                    	{% csrf_token %}
+                      <div class="form-wrap">
+                        <label class="form-label" for="search-form-2">Search Novels.</label>
+                        <input class="form-input" id="search-form-2" type="text" name="bar" autocomplete="off">
+                        <button class="button-search fl-bigmug-line-search74" type="submit"></button>
+                      </div>
+                    </form>
+                  </div>
+                  {% if genre %}
+                  <div class="aside-item col-md-6 col-lg-12">
+                   
+                    <h5 class="aside-title">Category</h5>
+                      {% for genres in genre %}
+                    <ul class="list-marked-2 list-category-2">
+                      <li><a href="{% url 'genre' genres.id %}">{{ genres }}</a><span class="list-category-number">{{genres.novel_set.count }}Novels {{genres.novella_set.count}}Stories</span></li>
+                     
+                    </ul>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  <div class="aside-item col-md-6 col-lg-12">
+                    <h5 class="aside-title">Popular Posts</h5>
+                    <div class="list-popular-post">
+                       {% if Horror %}
+               {% for horror in Horror %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' horror.id %}"><img src="{{horror.bookImage.url }}" alt="" style="width: 106px; height: 104px;" ></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="{% url 'about_books' horror.id %}">{{horror.title}} by {{horror.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{horror.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+                {% if Romance %}
+               {% for romance in Romance %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" style="width: 106px; height: 104px;"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="{% url 'about_books' romance.id %}">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{romance.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+{% if Satire %}
+               {% for romance in Satire %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" style="width: 106px; height: 104px;"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="{% url 'about_books' romance.id %}">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+
+
+{% if Action %}
+               {% for romance in Action %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" style="width: 106px; height: 104px;"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="{% url 'about_books' romance.id %}">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+
+
+
+{% if Fantasy  %}
+               {% for roman in Fantasy  %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' roman.id %}"><img src="{{roman.bookImage.url }}" alt="" style="width: 106px; height: 104px;"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="{% url 'about_books' roman.id %}">{{roman.title}} by {{ roman.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{roman.date_uploaded }}">{{ roman.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+
+
+
+
+
+
+
+{% if Mythology  %}
+               {% for romance in Mythology  %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" style="width: 106px; height: 104px;"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="{% url 'about_books' romance.id %}">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+
+
+
+
+
+
+
+
+
+                     
+                     
+                    </div>
+                  </div>
+               <!--    put authors -->
+            
+                 
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page Footer-->
+{% endblock %}
+
+<script type="text/javascript">
+	document.getElementById("iframeh").onload = function() {myFunction()};
+	function myFunction() {
+	document.getElementById('iframeh').src = document.getElementById('iframeh').src
+}
+</script>

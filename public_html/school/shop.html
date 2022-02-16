@@ -1,0 +1,350 @@
+{% extends "school/baseprod.html" %}
+
+{% block body %}
+{% load ratings %}
+      <!-- Breadcrumbs -->
+      <section class="bg-gray-7">
+        <div class="breadcrumbs-custom bg-image" style="background-image: url(/static/images/1.jpg);">
+          <div class="container">
+           
+            <div class="breadcrumbs-custom-decor"></div>
+          </div>
+        </div>
+        <div class="container">
+          <ul class="breadcrumbs-custom-path">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            <li class="active">Genre</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Section Shop-->
+      <section class="section section-lg bg-default text-md-left">
+        <div class="container">
+          <div class="row row-60">
+            <div class="col-lg-4 col-xl-3">
+              <div class="aside row row-60">
+                <div class="aside-item col-sm-6 col-lg-12">
+                  <h5 class="aside-title">Category</h5>
+                  <ul class="list-marked-2">
+                    {% if genre %} 
+                    {% for genres in genre %}
+
+                    <li><a href="{% url 'genre' genres.id %}">{{ genres }}</a></li>
+                   
+                    {% endfor %}{% endif %}
+
+                  </ul>
+                  <!-- RD Search Form-->
+                  <form class="form-search rd-search form-search" action="{% url 'download' %}" method="post">
+                    <div class="form-wrap">
+                      {% csrf_token %}
+                      <label class="form-label" for="search-form">Search..</label>
+                      <input class="form-input" id="search-form" type="text" name="bar" autocomplete="off">
+                      <button class="button-search fl-bigmug-line-search74" type="submit"></button>
+                    </div>
+                  </form>
+
+                </div>
+                <div class="aside-item col-sm-6 col-lg-12 order-lg-2">
+                  <h5 class="aside-title">Popular Product</h5>
+                  <div class="list-popular-product">
+                    <div class="list-popular-product-item">
+                      <!-- Product Minimal-->
+                      <article class="product-minimal unit unit-spacing-md">
+                        <div class="unit-left"><a class="product-minimal-figure" href="{% url 'details' 'book' top.0.id %}"><img src="{{ top.0.bookImage.url }}" alt="image" style="width: 106px; height: 104px;" /></a></div>
+                        <div class="unit-body">
+                          <p class="product-minimal-title"><a href="{% url 'details' 'book' top.0.id %}">{{ top.0.title|title }}</a></p>
+                          <p class="product-minimal-price">{{ top.0.author }}</p>
+                        </div>
+                      </article>
+
+                    </div>
+                    {% if top.1 %}
+                    <div class="list-popular-product-item">
+                      <!-- Product Minimal-->
+                      <article class="product-minimal unit unit-spacing-md">
+                        <div class="unit-left"><a class="product-minimal-figure" href="{% url 'details' 'book' top.1.id %}"><img src="{{ top.1.bookImage.url }}" alt=""style="width: 106px; height: 104px;"/></a></div>
+                        <div class="unit-body">
+                          <p class="product-minimal-title"><a href="{% url 'details' 'book' top.1.id %}">{{ top.1.title|title }}</a></p>
+                          <p class="product-minimal-price">{{ top.1.title|title }}</p>
+                        </div>
+                      </article>
+                    </div>
+                    {% endif %}
+                  </div>
+                </div>
+                <div class="aside-item col-12">
+               
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-8 col-xl-9">
+              <div class="product-top-panel group-md">
+                <h5 class="product-top-panel-title">{% if name and novel %} Book relatiing to {{ name}} {% elif name and story %} Story relating to {{ name }} {% else %} No Book relating to {{ name }}{% endif %}</h5>
+                <div class="product-top-panel-sorting">
+                 
+                </div>
+              </div>
+              <div class="row row-30 row-md-40 row-xl-60">
+
+
+                {% if name and story %}
+                {% for book in story %}
+
+
+
+                <div class="col-sm-6 col-xl-4">
+                  <!-- Product-->
+                  <article class="product">
+                    <div class="product-figure"><img src="{{ book.bookImage.url }}" alt="" style="width: 195px; height: 173px;" />
+                    </div>
+                    <div class="product-rating">
+                      {% ratings book %}
+
+                    </div>
+                    <h5 class="product-title">{{ book.title | title }}</h5>
+                    <div class="product-price-wrap">
+                      <div class="product-price">by {{ book.author.authorName }}</div>
+                    </div>
+                     
+                     <div class="product-button">
+                  <div class="button-wrap"><a class="button button-xs button-primary button-winona" href="{% url 'read' book.slug %}">Read</a></div>
+                  <div class="button-wrap"><a class="button button-xs button-default button-winona" href="{% url 'details' 'story' book.id %}">Check Details</a></div>
+                </div>
+
+                  </article>
+                </div>
+
+
+
+      {% endfor %}
+
+        <div class="pagination-wrap">
+
+                {% if story.has_other_pages %}
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-left mt-4">
+                {% if story.has_previous %}
+                <li class="page-item ">
+                  <a class="page-link" href="?page = {{story.previous_page_number }}" tabindex="-1">Previous</a>
+                </li>
+                {% else %}
+              
+                  <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                {% endif %}
+
+                {% for i in story.paginator.page_range %}
+                  {% if story.number == i %}
+                <li class="page-item active">
+                <a class="page-link" href="#" >{{i}}</a>
+                </li>
+                {% else %}
+                <li class="page-item ">
+                  <a class="page-link" href="?page={{ i }}">{{i}}</a>
+                </li>
+
+                {% endif %}
+                {% endfor %}
+
+
+                {%  if story.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{story.next_page_number}}">Next</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{story.paginator.num_pages}}">Last</a>
+                </li>
+                {%else %}
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" >Next</a>
+                </li>
+                {% endif %}
+              </ul>
+              
+            </nav></div>
+            {% endif %}
+
+              </div>
+      {% endif %}
+
+
+
+
+
+
+
+
+    {% if name and novel %}
+    {% for book in novel %}
+
+
+
+                <div class="col-sm-6 col-xl-4">
+                  <!-- Product-->
+                  <article class="product">
+                    <div class="product-figure"><img src="{{ book.bookImage.url }}" alt="" style="width: 195px; height: 173px;" />
+                    </div>
+                    <div class="product-rating">
+
+                      {% ratings book %}
+
+                    </div>
+                    <h5 class="product-title">{{ book.title | title }}</h5>
+                    <div class="product-price-wrap">
+                      <div class="product-price">by {{ book.author.authorName }}</div>
+                    </div>
+                     
+                    <div class="product-button">
+                  <div class="button-wrap"><a class="button button-xs button-primary button-winona" href="{% url 'about_books' book.id %}">Read</a></div>
+                  <div class="button-wrap"><a class="button button-xs button-default button-winona" href="{% url 'details' 'book' book.id %}">Check Details</a></div>
+                </div>
+
+                  </article>
+                </div>
+
+
+    {% endfor %}
+
+      <div class="pagination-wrap">
+                <!-- Bootstrap Pagination-->
+                {% if novel.has_other_pages %}
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-left mt-4">
+                {% if novel.has_previous %}
+                <li class="page-item ">
+                  <a class="page-link" href="?page = {{novel.previous_page_number }}" tabindex="-1">Previous</a>
+                </li>
+                {% else %}
+              
+                  <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                {% endif %}
+
+                {% for i in novel.paginator.page_range %}
+                  {% if novel.number == i %}
+                <li class="page-item active">
+                <a class="page-link" href="#" >{{i}}</a>
+                </li>
+                {% else %}
+                <li class="page-item ">
+                  <a class="page-link" href="?page={{ i }}">{{i}}</a>
+                </li>
+
+                {% endif %}
+                {% endfor %}
+
+
+                {%  if novel.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{novel.next_page_number}}">Next</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{novel.paginator.num_pages}}">Last</a>
+                </li>
+                {%else %}
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" >Next</a>
+                </li>
+                {% endif %}
+              </ul>
+              
+            </nav></div>
+            {% endif %}
+              </div>
+
+    {% endif %}
+
+
+
+
+    {% if genres and top %}
+    {% for popular in top %}
+
+                <div class="col-sm-6 col-xl-4">
+                  <!-- Product-->
+                  <article class="product">
+                    <div class="product-figure"><img src="{{ popular.bookImage.url }}" alt="" style="width: 195px; height: 173px;"/>
+                    </div>
+                    <div class="product-rating">
+                       {% ratings popular %}
+
+                    </div>
+                    <h5 class="product-title">{{ popular.title | title }}</h5>
+                    <div class="product-price-wrap">
+                      <div class="product-price">by {{ popular.author.authorName }}</div>
+                    </div>
+                    
+                      <div class="product-button">
+                  <div class="button-wrap"><a class="button button-xs button-primary button-winona" href="{% url 'about_books' popular.id %}">Read</a></div>
+                  <div class="button-wrap"><a class="button button-xs button-default button-winona" href="{% url 'details' 'book' popular.id %}">Check Details</a></div>
+                </div>
+
+                  </article>
+                </div>
+
+{% endfor %}
+  <div class="pagination-wrap">
+                <!-- Bootstrap Pagination-->
+               {% if top.has_other_pages %}
+            <nav aria-label="Page navigation example">
+              <ul class="pagination justify-content-left mt-4">
+                {% if top.has_previous %}
+                <li class="page-item ">
+                  <a class="page-link" href="?page = {{top.previous_page_number }}" tabindex="-1">Previous</a>
+                </li>
+                {% else %}
+              
+                  <li class="page-item disabled">
+                  <a class="page-link" href="#" tabindex="-1">Previous</a>
+                </li>
+                {% endif %}
+
+                {% for i in top.paginator.page_range %}
+                  {% if top.number == i %}
+                <li class="page-item active">
+                <a class="page-link" href="#" >{{i}}</a>
+                </li>
+                {% else %}
+                <li class="page-item ">
+                  <a class="page-link" href="?page={{ i }}">{{i}}</a>
+                </li>
+
+                {% endif %}
+                {% endfor %}
+
+
+                {%  if top.has_next %}
+                <li class="page-item">
+                  <a class="page-link" href="?page={{top.next_page_number}}">Next</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?page={{top.paginator.num_pages}}">Last</a>
+                </li>
+                {%else %}
+                <li class="page-item disabled">
+                  <a class="page-link" href="#" >Next</a>
+                </li>
+                {% endif %}
+              </ul>
+              
+            </nav>{% endif %}
+              </div>
+{% endif %}
+
+              </div>
+
+
+
+            
+
+
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+ {% endblock %}

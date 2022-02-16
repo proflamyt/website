@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html  lang="en">
+  
+{% load static %}
+{% load ratings %}
+<head>
+    <title>{{ book.title | title }}</title>
+    <meta name="format-detection" content="telephone=no">
+    <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8">
+    
+    <!-- Stylesheets-->
+    <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Roboto:100,300,300i,400,500,600,700,900%7CRaleway:500%7CAbril+Fatface">
+    <link rel="stylesheet" href="{% static 'prod/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'prod/css/fonts.css' %}">
+    <link rel="stylesheet" href="{% static 'prod/css/style.css' %}" id="main-styles-link">
+     <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>       
+
+ 
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="bookshelf-wrapper">
+        <ul class="books-list">
+          <li class="book-item first"></li>
+          <li class="book-item second"></li>
+          <li class="book-item third"></li>
+          <li class="book-item fourth"></li>
+          <li class="book-item fifth"></li>
+          <li class="book-item sixth"></li>
+        </ul>
+        <div class="shelf"></div>
+      </div>
+    </div>
+    <div class="page">
+      <!-- Page Header-->
+      <header class="section page-header">
+        <!-- RD Navbar-->
+        <div class="rd-navbar-wrap">
+          <nav class="rd-navbar rd-navbar-corporate" data-layout="rd-navbar-fixed" data-sm-layout="rd-navbar-fixed" data-md-layout="rd-navbar-fixed" data-md-device-layout="rd-navbar-fixed" data-lg-layout="rd-navbar-static" data-lg-device-layout="rd-navbar-fixed" data-xl-layout="rd-navbar-static" data-xl-device-layout="rd-navbar-static" data-xxl-layout="rd-navbar-static" data-xxl-device-layout="rd-navbar-static" data-lg-stick-up-offset="80px" data-xl-stick-up-offset="80px" data-xxl-stick-up-offset="80px" data-lg-stick-up="true" data-xl-stick-up="true" data-xxl-stick-up="true">
+            <div class="rd-navbar-collapse-toggle rd-navbar-fixed-element-1" data-rd-navbar-toggle=".rd-navbar-collapse"><span></span></div>
+            <div class="rd-navbar-main-outer">
+              <div class="rd-navbar-main">
+                <!-- RD Navbar Panel-->
+                <div class="rd-navbar-panel">
+                  <!-- RD Navbar Toggle-->
+                  <button class="rd-navbar-toggle" data-rd-navbar-toggle=".rd-navbar-nav-wrap"><span></span></button>
+                  <!-- RD Navbar Brand-->
+                  <div class="rd-navbar-brand"><a class="brand" href="index.html"><img class="brand-logo-dark" src="{% static 'aline/images/logo.png' %}" alt="" width="187" height="45"/></a></div>
+                </div>
+                <div class="rd-navbar-main-element">
+                  <div class="rd-navbar-nav-wrap">
+                    <!-- RD Navbar Nav-->
+                    <ul class="rd-navbar-nav">
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="index.html">Home</a>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="#">Pages</a>
+                        <!-- RD Navbar Megamenu-->
+                        <ul class="rd-menu rd-navbar-megamenu">
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Services</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="services.html">Services</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="single-service.html">Single service</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Additional Pages</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="404-page.html">404 page</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="coming-soon.html">Coming soon</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="counters.html">Counters</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="search-results.html">Search results</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="privacy-policy.html">Privacy policy</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="contacts.html">Contacts</a></li>
+                            </ul>
+                          </li>
+                          <li class="rd-megamenu-item">
+                            <h6 class="rd-megamenu-title">Elements</h6>
+                            <ul class="rd-megamenu-list">
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="typography.html">Typography</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="buttons.html">Buttons</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="forms.html">Forms</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tabs-and-accordions.html">Tabs and accordions</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="progress-bars.html">Progress bars</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="grid-system.html">Grid system</a></li>
+                              <li class="rd-megamenu-list-item"><a class="rd-megamenu-list-link" href="tables.html">Tables</a></li>
+                            </ul>
+                          </li>
+                        </ul>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="about-us.html">About us</a>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="shop.html">Shop</a>
+                        <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="shop.html">Shop</a></li>
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="single-product.html">Single product</a></li>
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="checkout.html">Checkout</a></li>
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="cart-page.html">Cart page</a></li>
+                        </ul>
+                      </li>
+                      <li class="rd-nav-item"><a class="rd-nav-link" href="projects.html">Projects</a>
+                        <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="projects.html">Projects</a></li>
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="project-page.html">Project page</a></li>
+                        </ul>
+                      </li>
+                      <li class="rd-nav-item active"><a class="rd-nav-link" href="grid-blog.html">News</a>
+                        <!-- RD Navbar Dropdown-->
+                        <ul class="rd-menu rd-navbar-dropdown">
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="grid-blog.html">Grid blog</a></li>
+                          <li class="rd-dropdown-item"><a class="rd-dropdown-link" href="blog-post.html">Blog post</a></li>
+                        </ul>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div class="rd-navbar-collapse">
+                  <ul class="rd-navbar-contacts-4">
+                    <li><span class="icon mdi mdi-phone"></span><span class="link-wrap"><a class="phone" href="tel:#">+1 718-999-3939</a></span></li>
+                    <li><span class="icon mdi mdi-email-outline"></span><span class="link-wrap"><a class="mail" href="mailto:#">info@demolink.org</a></span></li>
+                    <li><span class="icon mdi mdi-map-marker"></span><span class="link-wrap"><a class="address" href="#">514 S. Magnolia St. Orlando, FL 32806</a></span></li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </nav>
+        </div>
+      </header>
+      <!-- Breadcrumbs -->
+      <section class="bg-gray-7">
+        <div class="breadcrumbs-custom bg-image" style="background-image: url(images/bg-breadcrumbs.jpg);">
+          <div class="container">
+            <h1 class="breadcrumbs-custom-title">Blog post</h1>
+            <div class="breadcrumbs-custom-decor"></div>
+          </div>
+        </div>
+        <div class="container">
+          <ul class="breadcrumbs-custom-path">
+            <li><a href="index.html">Home</a></li>
+            <li><a href="grid-blog.html">News</a></li>
+            <li class="active">Blog post</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Grid Blog-->
+      <section class="section section-lg bg-default">
+        <div class="container">
+          <div class="row row-60 row-xl-75">
+            <div class="col-lg-8">
+              <div class="single-post section-style-2">
+                <h3 class="text-spacing-50 font-weight-normal text-transform-none">{{ book.title | title }}</h3>
+                <div class="group-md group-middle">
+                  <time class="post-classic-time" datetime="2018-04-05">{{ book.date_uploaded}}</time>
+                  <div>
+                    <ul class="list-inline list-inline-xl post-classic-info">
+                      <li class="post-classic-author"><span class="icon mdi mdi-account-outline"></span><span>by <a href="{% url 'profile' book.author.id %}">{{book.author.authorName | title }} </a> </span></li>
+                      <li class="post-classic-views"><span class="icon mdi mdi-eye"></span><span>3678</span></li>
+                      <li class="post-classic-comments"><span class="icon mdi mdi-comment-outline"></span><a href="#">3</a></li>
+                    </ul>
+                  </div>
+                </div>
+                <p>{{ book.summary | safe }}</p><a href="{% url 'about_books' book.id %}">
+                  <img src='{{ book.bookImage.url }}'  style="width: 900px; height: 500px;" class="img-fluid shadow-lg" alt="pics">
+                </a>
+                  <p id="demo">
+            <iframe id='iframeh' src="https://docs.google.com/gview?url=seehowtv.com{{ book.bookFile.url }}&embedded=true" style=" width:100%; height:300vh; border: none;"> your browser doesnt support iframe </iframe>
+             </p>
+                <!-- Quote Classic-->
+               
+                <div class="unit unit-spacing-xl flex-column flex-md-row flex-lg-column flex-xl-row">
+                  <div class="unit-left"><img src="{{ book.author.profile_image.url }}" alt="" width="333" height="243"/>
+                  </div>
+                  <div class="unit-body">
+                    <p>{{book.author.about_me }}</p>
+                  </div>
+                </div>
+
+
+
+                <div class="single-post-footer">
+                  <div class="group-lg group-sm-justify">
+                    <h5 class="text-transform-none font-weight-normal">Share this post</h5>
+                    <div>
+                      <ul class="list-inline single-post-social-list list-inline-md">
+                        <li><a class="icon mdi mdi-facebook" href="#"></a></li>
+                        <li><a class="icon mdi mdi-twitter" href="#"></a></li>
+                        <li><a class="icon mdi mdi-instagram" href="#"></a></li>
+                        <li><a class="icon mdi mdi-google-plus" href="#"></a></li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% if book.author.favorite %}
+              <div class="single-post-title">Related Posts</div>
+              
+              <div class="row row-lg row-30 justify-content-center">
+{% for favourite in book.author.favorite.values %}
+                <div class="col-sm-6">
+                  <!-- Post Classic-->
+                  <article class="post post-classic post-classic-2">
+                    <div class="post-classic-figure"><img src="/{{ fovourite.bookImage.url }}" alt="" width="370" height="365"/>
+                    </div>
+                    <div class="post-classic-content">
+                      <p class="post-classic-title"><a href="{% url 'about_books' favourite.id %}">{{ favourite.title | title }}</a>
+                      </p>
+                    </div>
+                    <time class="post-classic-time" datetime="{{ favourite.date_uploaded}}">{{ favourite.date_uploaded}}</time>
+                  </article>
+                </div>
+
+               {% endfor %}
+              </div>
+{% endif %}
+
+
+              <div class="single-post-title"><span>Rate</span> {% ratings book%}</div>
+              
+              <div class="box-comment box-comment-post">
+                <div class="unit flex-column flex-md-row">
+                  <div class="unit-left"><a class="box-comment-figure" href="#"><img src="images/user-4-66x66.jpg" alt="" width="66" height="66"/></a></div>
+                  <div class="unit-body">
+                    <div class="group-md group-justify">
+                      <div>
+                        <div class="group-md group-middle">
+                          <p class="box-comment-author"><a href="#">John</a></p>
+                        </div>
+                      </div>
+                      <div class="box-comment-days-ago">1 days ago</div>
+                    </div>
+                    <p class="box-comment-text">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in  Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation </p>
+                    <div class="group-xl group-middle justify-content-start">
+                      <div class="box-comment-like"><span class="icon mdi mdi-thumb-up-outline"></span><a href="#">32</a></div>
+                      <div class="box-comment-reply"><span class="icon mdi mdi-comment-outline"></span><a href="#">Reply</a></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="unit flex-column flex-md-row box-comment-form">
+                <div class="unit-left"><a class="box-comment-figure" href="#"><img src="images/user-5-66x66.jpg" alt="" width="66" height="66"/></a></div>
+                <div class="unit-body">
+                  <p class="box-comment-author"><a href="#">Miranda</a></p>
+                  <form class="rd-form rd-mailform form-comment-post">
+                    <div class="form-wrap">
+                      <label class="form-label" for="form-comment-post">Your comment</label>
+                      <textarea class="form-input textarea-lg" id="form-comment-post" name="message" data-constraints="@Required"></textarea>
+                    </div>
+                    <button class="button button-lg button-primary button-winona" type="submit">Submit</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="col-lg-4">
+              <div class="inset-left-xl-40">
+                <div class="aside row row-60 row-xl-75">
+                  <div class="aside-item col-12">
+                    <!-- RD Search Form-->
+                    <form class="form-search rd-search form-search" action="https://livedemo00.template-help.com/wt_prod-19015/search-results.html" method="GET">
+                      <div class="form-wrap">
+                        <label class="form-label" for="search-form-2">Search the blog...</label>
+                        <input class="form-input" id="search-form-2" type="text" name="s" autocomplete="off">
+                        <button class="button-search fl-bigmug-line-search74" type="submit"></button>
+                      </div>
+                    </form>
+                  </div>
+                  {% if genre %}
+                  <div class="aside-item col-md-6 col-lg-12">
+                     {% for genres in genre %}
+                    <h5 class="aside-title">Category</h5>
+                    <ul class="list-marked-2 list-category-2">
+                      <li><a href="#">{{ genres }}</a><span class="list-category-number">{{genres.novel_set.count }}</span></li>
+                     
+                    </ul>
+                    {% endfor %}
+                  </div>
+                  {% endif %}
+                  <div class="aside-item col-md-6 col-lg-12">
+                    <h5 class="aside-title">Popular Posts</h5>
+                    <div class="list-popular-post">
+                       {% if Horror %}
+               {% for horror in Horror %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' horror.id %}"><img src="{{horror.bookImage.url }}" alt="" width="106" height="104"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="blog-post.html">{{horror.title}} by {{horror.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{horror.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+                {% if Romance %}
+               {% for romance in Romance %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" width="106" height="104"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="blog-post.html">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+{% if Satire %}
+               {% for romance in Satire %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" width="106" height="104"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="blog-post.html">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+
+
+{% if Action %}
+               {% for romance in Action %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" width="106" height="104"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="blog-post.html">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+
+
+
+{% if Fantasy  %}
+               {% for romance in Fantasy  %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" width="106" height="104"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="blog-post.html">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+
+
+
+
+
+
+
+{% if Mythology  %}
+               {% for romance in Mythology  %}
+                      <div class="list-popular-post-item">
+                        <!-- Post Minimal-->
+                        <article class="post post-minimal">
+                          <div class="unit unit-spacing-2 align-items-center unit-spacing-md">
+                            <div class="unit-left"><a class="post-minimal-figure" href="{% url 'about_books' romance.id %}"><img src="{{romance.bookImage.url }}" alt="" width="106" height="104"/></a></div>
+                            <div class="unit-body">
+                              <p class="post-minimal-title"><a href="blog-post.html">{{romance.title}} by {{ romance.author.authorName }}</a></p>
+                              <div class="post-minimal-time">
+                                <time datetime="{{horror.date_uploaded }}">{{ romance.date_uploaded }}</time>
+                              </div>
+                            </div>
+                          </div>
+                        </article>
+                      </div>
+
+{% endfor %}
+              {% endif %}
+
+
+
+
+
+
+
+
+
+
+                     
+                     
+                    </div>
+                  </div>
+                  <div class="aside-item col-sm-6 col-lg-12">
+                    <h5 class="aside-title">Blog Archive</h5>
+                    <ul class="list-marked-2">
+                      <li><a href="#">September 2018</a></li>
+                      <li><a href="#">August 2018</a></li>
+                    </ul>
+                  </div>
+                  <div class="aside-item col-sm-6 col-lg-12">
+                    <h5 class="aside-title">Tags</h5>
+                    <div class="group-xxs group-middle justify-content-start"><a class="button-tags" href="#">News</a><a class="button-tags" href="#">Books</a><a class="button-tags" href="#">Library</a><a class="button-tags" href="#">Events</a><a class="button-tags" href="#">Stories</a><a class="button-tags" href="#">Blog</a></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Page Footer-->
+      <footer class="section section-md footer-creative footer-creative-2 context-dark">
+        <div class="container">
+          <div class="row row-60 justify-content-center justify-content-md-between">
+            <div class="col-sm-8 col-md-5 col-lg-3">
+              <h3 class="footer-creative-title oh-desktop"><span class="d-inline-block wow slideInDown">Get In Touch</span></h3>
+              <ul class="footer-creative-contacts d-inline-block d-md-block">
+                <li class="wow fadeInRight">
+                  <p class="footer-creative-contacts-title">Free consultation</p><a class="phone" href="tel:#">+1 718-999-3939</a>
+                </li>
+                <li class="wow fadeInRight" data-wow-delay=".05s">
+                  <p class="footer-creative-contacts-title">Address</p><a class="address" href="#">514 S. Magnolia St. Orlando, FL 32806</a>
+                </li>
+                <li class="wow fadeInRight" data-wow-delay=".1s">
+                  <p class="footer-creative-contacts-title">E-mail</p><a class="mail" href="mailto:#">info@demolink.org</a>
+                </li>
+              </ul>
+              <hr/>
+              <ul class="list-inline footer-social-list footer-social-list-2">
+                <li><a class="icon mdi mdi-facebook" href="#"></a></li>
+                <li><a class="icon mdi mdi-twitter" href="#"></a></li>
+                <li><a class="icon mdi mdi-instagram" href="#"></a></li>
+                <li><a class="icon mdi mdi-google-plus" href="#"></a></li>
+              </ul>
+            </div>
+            <div class="col-sm-9 col-md-6 col-lg-5 col-xl-4">
+              <h3 class="footer-creative-title oh-desktop"><span class="d-inline-block wow slideInDown">Popular News</span></h3>
+              <div class="list-popular-post">
+                <div class="list-popular-post-item wow fadeInRight">
+                  <!-- Post Minimal-->
+                  <article class="post post-minimal post-minimal-2">
+                    <div class="unit unit-spacing-2 align-items-center flex-column text-center flex-sm-row text-sm-left">
+                      <div class="unit-left"><a class="post-minimal-figure" href="blog-post.html"><img src="images/post-1-115x89.jpg" alt="" width="115" height="89"/></a></div>
+                      <div class="unit-body">
+                        <p class="post-minimal-title"><a href="blog-post.html">Top 10 Library Events to Visit This Month</a></p>
+                        <div class="post-minimal-time">
+                          <time datetime="2018-04-20">April 20, 2018</time>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+                <div class="list-popular-post-item wow fadeInRight">
+                  <!-- Post Minimal-->
+                  <article class="post post-minimal post-minimal-2">
+                    <div class="unit unit-spacing-2 align-items-center flex-column text-center flex-sm-row text-sm-left">
+                      <div class="unit-left"><a class="post-minimal-figure" href="blog-post.html"><img src="images/post-2-115x89.jpg" alt="" width="115" height="89"/></a></div>
+                      <div class="unit-body">
+                        <p class="post-minimal-title"><a href="blog-post.html">Best Books for Your Children</a></p>
+                        <div class="post-minimal-time">
+                          <time datetime="2018-04-20">April 20, 2018</time>
+                        </div>
+                      </div>
+                    </div>
+                  </article>
+                </div>
+              </div>
+              <p class="wow fadeInRight">Sign up today for tips and latest news</p>
+              <!-- RD Mailform-->
+              <form class="rd-form rd-mailform rd-form-inline rd-form-inline-sm wow fadeInUp" data-form-output="form-output-global" data-form-type="subscribe" method="post" action="https://livedemo00.template-help.com/wt_prod-19015/bat/rd-mailform.php">
+                <div class="form-wrap">
+                  <input class="form-input" id="subscribe-form-2-email" type="email" name="email" data-constraints="@Email @Required"/>
+                  <label class="form-label" for="subscribe-form-2-email">Enter your E-mail</label>
+                </div>
+                <div class="form-button">
+                  <button class="button button-sm button-icon-2 button-primary button-winona" type="submit"><span class="icon mdi mdi-telegram"></span></button>
+                </div>
+              </form>
+            </div>
+            <div class="col-sm-10 col-md-12 col-lg-3 col-xl-3">
+              <div class="oh-desktop">
+                <div class="inset-left-xl-20 wow slideInLeft"><a class="brand" href="index.html"><img src="images/logo-inverse-187x45.png" alt="" width="187" height="45"/></a>
+                  <p>Providing access to the best books for children and adults.</p>
+                  <ul class="footer-creative-list d-inline-block d-sm-block">
+                    <li><a href="about-us.html">About us</a></li>
+                    <li><a href="services.html">Services</a></li>
+                    <li><a href="#">Our Team</a></li>
+                    <li><a href="projects.html">Projects</a></li>
+                    <li><a href="grid-blog.html">News</a></li>
+                    <li><a href="contacts.html">Contacts</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="shop.html">Shop</a></li>
+                  </ul>
+                  <!-- Rights-->
+                  <p class="rights"><span>&copy;&nbsp;</span><span class="copyright-year"></span><span>&nbsp;</span><span>MagicBook</span><span>.&nbsp;</span><a href="privacy-policy.html">Privacy policy</a></p>
+                </div>
+              </div>
+              <div class="bg-footer-creative"></div>
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <!-- Global Mailform Output-->
+    <div class="snackbars" id="form-output-global"></div>
+    <!-- Javascript-->
+    <script src="js/core.min.js"></script>
+    <script src="js/script.js"></script>
+  <!-- End Google Tag Manager --></body>
+
+<!-- Mirrored from livedemo00.template-help.com/wt_prod-19015/blog-post.html by HTTrack Website Copier/3.x [XR&CO'2014], Sat, 23 Jan 2021 21:17:02 GMT -->
+</html>
