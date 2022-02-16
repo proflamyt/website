@@ -3,23 +3,30 @@ from .form import *
 from django.contrib.auth import authenticate, login, logout
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required , user_passes_test
-# Create your views here.
-from django.http import HttpResponseRedirect
+from djangorave.models import PaymentTypeModel
+from datetime import timedelta
+from django.http import HttpResponseRedirect,HttpResponseForbidden
 from django.db.models import Q
 from django.template import RequestContext
-from PyPDF2 import PdfFileReader
+#from PyPDF2 import PdfFileReader
 from PIL import Image
 from django.core.files import File 
 from school.models import get_mime
 from django.core.mail import mail_admins
-
+from django.shortcuts import get_list_or_404, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import Group
 from decouple import config
+from django.utils import timezone
+from django.views.generic import TemplateView
 from django.core.paginator import Paginator,EmptyPage , PageNotAnInteger
- 
+from django.core.exceptions import PermissionDenied, ObjectDoesNotExist
+from rave_python import Rave,RaveExceptions
+from django.core import serializers
+from random import choice
+rave = Rave(config('RAVE_SANDBOX_PUBLIC_KEY'), config('RAVE_SANDBOX_SECRET_KEY'), usingEnv = False)
+#rave = Rave(config('RAVE_PRODUCTION_PUBLIC_KEY'),'RAVE_SECRET_KEY', production=True)
 
-RUN_URL = "https://api.hackerearth.com/v3/code/run/"
 
 def home(request):
     authors  =  Profile.objects.all()
@@ -29,13 +36,23 @@ def home(request):
     }
     return render(request, 'school/index.html',context)
 
-def about(request):
 
+def prem(request):
+    authors  =  Profile.objects.all()
+    message = 'Subscribe As Premium User To Access'
+  
+    context = {
+        'authors':authors,
+        'message':message
+    }
+    return render(request, 'school/index.html',context)
+
+
+def about(request):
     return render(request, "school/about.html")
 
-
-
-
+def join_course(request):
+    return render(request, "school/about.html")
 
 def gallary(request):
 
@@ -43,11 +60,12 @@ def gallary(request):
 
 
 
-def index(request):
+def index(request,error=None):
     authors  =  Profile.objects.all()
    
     context = {
-        'authors':authors
+        'authors':authors,
+        'error':error
     }
     return render(request, "school/index.html",context)
 def contact(request):
@@ -55,23 +73,29 @@ def contact(request):
     return render(request, "school/contact.html")
 
 def courses(request):
-    images = Cimage.objects.all()[:4]
-    course = Course_Description.objects.all()[:5]
+    course = Course_category.objects.all()
 
     context = {
-        'image':images,
+       
         'course': course
     }
     return render(request, "school/courses.html", context)
 
 
-def is_author(user):
-    return user.groups.filter(name='Author').exists()
+
 
 def is_tutor(user):
     return user.groups.filter(name='Tutor').exists()
+
 def is_registered(user):
-    return user.groups.filter(name="Premium").exists()
+    premium,_ = Premium.objects.get_or_create(user=user)
+    is_premium = premium.premium
+    expiry = premium.expiry_date
+    if timezone.now() > expiry:
+        premium.premium = False
+        premium.save()
+
+    return is_premium
 
    
  
@@ -83,21 +107,28 @@ def loginv(request):
         return HttpResponseRedirect(reverse('index'))
     
     if request.method == 'POST':
-        username = request.POST.get('username')
-        password = request.POST.get('password1')
-        user = authenticate(request, username=username, password=password)
-       
-        if user is not None:
-            
-            login(request, user)
-            message = 'Logged in'
-            return render(request, 'school/index.html', {'message':message}) 
+        form = Login(request.POST)
+        if form.is_valid():
+            username = request.POST.get('username')
+            password = request.POST.get('password1')
+            user = authenticate(request, username=username, password=password)
+            if user is not None:
+                login(request, user)
+                message = 'Logged in'
+                authors  =  Profile.objects.all()
+                context = {
+                    'message':message,
+                    'author':authors
+                }
+                return render(request, 'school/index.html', context) 
 
-        else:
-            error='Please enter valid Username and Password.'
+            else:
+                error='Please enter valid Username and Password.'
+        
     context={
             'message':error,
-            'form':form
+            'form':form,
+            'error': error
         }       
     return render(request, 'school/login.html',context)
 
@@ -123,8 +154,14 @@ def register(request):
             user = authenticate(username=username, password=raw_password)
             
             login(request, user)
-            message = 'Registered'
-            return render(request, 'school/index.html', {'message':message}) 
+            authors  =  Profile.objects.all()
+  
+            context = {
+                    'authors':authors,
+                     'message' : 'Registered'
+                }
+            
+            return render(request, 'school/index.html', context) 
         errors = form.errors
     form = SignUpForm() 
     context = {
@@ -134,77 +171,10 @@ def register(request):
    
     return render(request,"school/register.html",context)
 
-@login_required(login_url='login')
-def upload_book(request):
-    error = None
-
-    if request.method == 'POST':
-        book_form = UploadBookForm(request.POST, request.FILES, instance = request.user)
-     
-        if book_form.is_valid():
-            title = request.POST.get('title')        
-            summary = request.POST.get('summary')
-            isbn = request.POST.get('isbn')
-            genre = request.POST.getlist('genre')   
-            bookImage = request.FILES.get('bookImage')  
-            bookFile = request.FILES.get('bookFile')
-            book = Novel.objects.create()
-            for i in range(len(genre)):
-                book.genre.add(genre[i])   
-            book.title=title
-            book.summary=summary
-            book.isbn=isbn
-            book.bookFile = bookFile
-            book.created_author= request.user
-            if bookImage:
-                book.bookImage= bookImage    
-            try:
-                author =  Profile.objects.get(user = request.user )
-            except Profile.DoesNotExist:
-                author = Profile(authorName = request.user.username, user = request.user)
-                author.save()
-            book.author = author
-            book.save()
-            author_group = Group.objects.get(name='Author')
-            author_group.user_set.add(request.user)
-            
-             
-            message = 'Book Uploaded'
-            return render(request, 'school/index.html', {'message':message}) 
-        error = book_form.errors
-    book_form = UploadBookForm(request.POST,request.FILES, instance = request.user)
-    context = {
-            'error':error,
-            'book_form': book_form
-
-        }
-        
-        
-    return render(request,'school/upload.html', context)
 
 
 
-@login_required(login_url='login')
-def update_pofile(request):
-    if request.POST:
-        instance = Profile.objects.get(user=request.user)
-        form = EditProfileForm(request.POST , request.FILES , user= request.user, instance=instance)
-  
-        if form.is_valid():
-          
 
-
-            form.save()
-
-            return render(request,'school/index.html')
-  
-    form = EditProfileForm( user = request.user ,  instance = request.user.profile)
-    
-    context = {
-        'profile_form' : form,
-        
-    }
-    return render(request, 'school/edit.html',context)
 
 @login_required(login_url='login')
 def update_pic(request):
@@ -217,81 +187,8 @@ def update_pic(request):
     return render(request, 'profile.html',{'form':form})
 
 
-def download(request):
-    booky = Novel.objects.all().order_by('-ratings__average')
-    #this = booky.order_by('date_uploaded')
-    genres =  Genre.objects.all()
-    books  = pagination(request, booky , 6)
-    if request.POST:
-       
-        form = Search(request.POST)
-        if form.is_valid():
-            name =  request.POST.get('bar')
-           
-            query = Q(author__authorName__icontains = name)
-            query.add(Q(title__icontains= name),Q.OR)
-            query.add(Q(genre__name__icontains= name),Q.OR)
-            ola = Novel.objects.filter(query)
-            olah = pagination(request ,  ola  , 9)
-            form = Search()
-            context={
-                'form': form,
-                'novel':olah,
-                'top' : books,
-                'name':name,
-                
-                'genre':genres
-                
-            }
 
-            return render (request,'school/search.html',context)
-    form = Search()
-    context={
-                'form': form,
-                'top' : books,
-                'genre':genres
-            }
-    return render(request,'school/search.html',context)
-
-@login_required(login_url='login')
-def join_course(request):
-    error = None
     
-    if request.POST:
-        courses =request.POST.getlist('coursess')
-        try:
-            instance = Course.objects.get(Email=request.user)
-            form = Courses(request.POST , instance= instance)
-        except Course.DoesNotExist:
-            form = Courses(request.POST)
-            
-        if form.is_valid():
-            ola= form.save(commit=False)
-            ola.Email = request.user
-            ola.save()
-            for course in courses:
-                ola.coursess.add(course)
-            ola.save()
-     
-            message = 'Course Registered'
-            return render(request, 'school/index.html', {'message':message})
-        error = form.errors 
-    
-    try:
-        instance = Course.objects.get(Email=request.user)
-        form = Courses(  instance = instance )
-    except Course.DoesNotExist:
-        form = Courses()
-    
-    context = {
-            'error':error,
-            'form':form
-        }
-        
-        
-        
-
-    return render(request,'school/join.html',context)
             
 
 @login_required(login_url='login')
@@ -304,7 +201,6 @@ def join(request,course_page):
    
     ok = []
     
-    
     if request.user.registered_courses:
         olab = request.user.registered_courses.values()
         for ol in olab:
@@ -316,8 +212,15 @@ def join(request,course_page):
         d = d.course_category.id
         
     except Course_Description.DoesNotExist:
-        message = 'Course Does Not Exist'
-        return render(request, 'school/index.html', {'message':message})
+        authors  =  Profile.objects.all()
+  
+        context = {
+                    'authors':authors,
+                     'message': 'Course Does Not Exist'
+                }
+        
+         
+        return render(request, 'school/index.html', context)
     listy  = subscriped.coursess.values()
     exist = False
     for i in listy:
@@ -326,14 +229,19 @@ def join(request,course_page):
             continue
     
     if exist == True:
-        course = Course_Description.objects.get(id = course_page)
+        course = get_object_or_404(Course_Description, id = course_page)
         if course.course_category.category:
             categories = course.course_category.category
         else:
             categories ='Hacking'
         course_cat =  Course_Description.objects.filter(course_category__category=categories)
+   
+        if request.is_ajax():
+            #print('hey')
+            return course_page
         sel_course = Select_course.objects.all()[:5]
-        image = Cimage.objects.filter(id = course_page)
+        name = course.course_name
+        image = Cimage.objects.filter(name=name).first()
         if not course.premium:
             description = course.description
             name = course.course_name.sel
@@ -348,73 +256,64 @@ def join(request,course_page):
                 'image':image,
                 'ok':ok,
                 'name':name,
-                'course': course_cat
+                'course': course_cat, 
+           
                 
                 
             }
 
         return render(request, 'school/singlecourse.html', context)
     else:
-        print(exist)
-        message = 'You are Not registered for this course'
-        return render(request, 'school/index.html', {'message':message})
+        authors  =  Profile.objects.all()
+  
+        context = {
+                    'authors':authors,
+                     'message': 'You are Not registered for this course'
+                }
+        
+        return render(request, 'school/index.html',context)
     return HttpResponseRedirect(reverse('join_course'))
 
-def about_books(request, book_id ):
-    books = Novel.objects.get(pk=book_id)
-    genres =  Genre.objects.all()
-    genre1_top_books= Novel.objects.filter(genre = genres[0]).order_by('date_uploaded')[:1]
-    genre2_top_books= Novel.objects.filter(genre = genres[1]).order_by('date_uploaded')[:1]
-    genre3_top_books= Novel.objects.filter(genre = genres[2]).order_by('date_uploaded')[:1]
-    genre4_top_books= Novel.objects.filter(genre = genres[3]).order_by('date_uploaded')[:1]
-    genre5_top_books= Novel.objects.filter(genre = genres[4]).order_by('date_uploaded')[:1]
-    genre6_top_books= Novel.objects.filter(genre = genres[5]).order_by('date_uploaded')[:1] 
-    context= {
-        'book' : books,
-        'genre' : genres,
-        
-        
-    }
-    context['Horror']=genre1_top_books
-    context['Satire']=genre2_top_books
-    context['Action']=genre3_top_books
-    context['Romance']=genre4_top_books
-    context['Fantasy']=genre5_top_books
-    context['Mythology']=genre6_top_books
 
-
-
-    return render(request , 'school/single.html' , context)
-
-def genre_func(request, id):
-    genres =  Genre.objects.get(id=id)
-    genre_display =  Novel.objects.filter(genre = genres ).order_by('date_uploaded')
-    genre = pagination(request,genre_display,9) 
-    form = Search()
-    context = {
-        'top':genre_display,
-        'form':form,
-        'genres':genres
-    }
-    return render(request, 'school/search.html',context)
 
 
 def logout_request(request):
    
     logout(request)
-    message = 'log out successful'
-    return render(request,"school/index.html", {'message':message})
+    authors  =  Profile.objects.all()
+  
+    context = {
+                    'authors':authors,
+                     'message': 'Logged Out'
+                }
+        
+    return render(request, 'school/index.html',context)
 
-def profile_view(request):
-    return render(request, 'school/Profile.html')
+def profile_view(request, id):
+    try:
+        profile = Profile.objects.get(id=id)
+    except Profile.DoesNotExist:
+        return HttpResponseRedirect('404')
+    
+    favorite = profile.favorite.values
+
+    
+    context = {
+        'profile':profile,
+        'favorite':favorite
+    }
+
+
+    return render(request, 'school/Profile.html', context)
 
 
 
 
 
 @login_required(login_url='login')
-@user_passes_test(is_registered , login_url='index')
+@user_passes_test(is_registered , login_url='pay')
 def compiler(request):
+    RUN_URL = "https://api.hackerearth.com/v3/code/run/"
     if request.is_ajax():
         source = request.POST['source']
         lang = request.POST['lang']
@@ -426,103 +325,67 @@ def compiler(request):
         'time_limit': 5,
         'memory_limit': 262144,
         }
+        
         if 'input' in request.POST:
-            data['input'] = request.POST['input']
-            r = request.post(RUN_URL, data=data)		      
-            return JsonResponse(r.json(), safe=False)
+            data['input'] = request.POST['input']   
+        r = request.post(RUN_URL, data=data)     		      
+        return JsonResponse(r.json(), safe=False)
+    if request.method == 'GET':
+        return render(request, 'school/ola.html')
+    else:
+        return HttpResponseForbidden()
+    
 
-        else:
-            return HttpResponseForbidden()
-    return render(request, 'school/ola.html')
 
 
 
 
-def pdf_view(book ):
-  
-    with open(book , 'rb') as p :
-        pdf = PdfFileReader(p)
-        info = pdf.getDocumentInfo()
-        no_of_pages = pdf.getNumPages()
-        context = {
-            'pdf':pdf,
-            'info':info,
-            'no_of_pages':no_of_pages,
-            
-        }
-        return context
-        '''
-      response = HttpResponse(pdf, mimetype= '/application/pdf')
-        response['Content- Disposition'] = f'inline;filename= cHowTV{book.name}.pdf'
-        pdf.close()   
-'''
-def pagination(request, book , page):
-    page_number = request.GET.get('page', 1)
-    paginator = Paginator(book, per_page=page)
-    try:
-        books = paginator.page(page_number)
-    except PageNotAnInteger:
-        books = paginator.page(1)
-    except EmptyPage:
-        books =  paginator.page(1)
-    return books
-
-@login_required(login_url='login')
-@user_passes_test(is_author, login_url='upload') 
-def reg_author(request):  
-    if Profile.objects.filter(user=request.user).exists():
-        return HttpResponseRedirect(reverse('edit'))
-    error = None 
-    search = Search()
-    if request.POST:
-        form = ProfileForm(request.POST,request.FILES, user= request.user)
-
-        if form.is_valid():
-            authorName = request.POST.get('authorName')        
-            about_me = request.POST.get('about_me')
-            favorite = request.POST.getlist('favorite')          
-            profile_image = request.FILES.get('profile_image')  
-            prof = Profile.objects.create(user = request.user)
-            prof.user = request.user
-            prof.authorName =  authorName
-            
-            for i in range(len(favorite)):
-                prof.favorite.add(favorite[i]) 
-            if profile_image:
-                prof.profile_image = profile_image
-            prof.about_me = about_me
-            prof.save()
-            form.save()
-
-            return HttpResponseRedirect(reverse('upload'))
-
-        error =  form.errors
-    form = ProfileForm(user=request.user)
-    context = {
-        'form':form,
-        'error': error,
-        'search': search
-    }
-    return render(request,'school/author.html',context)
 @login_required(login_url='login')
 @user_passes_test(is_tutor, login_url='courses')
 def tutorial(request):
+    error = None
     if request.POST:
-        form = Tutorial(request.POST, user= request.user)
-        if form.is_valid:
+        course_name = int(request.POST.get('course_name'))#
+        course =  get_object_or_404(Select_course,id=course_name)
+        ok,_ =  Course_Description.objects.get_or_create(course_name=course)
+        form = Tutorial(request.POST, user= request.user, instance= ok)
+        if form.is_valid():
             ola= form.save(commit=False)
             try:
                 tutor = Tutor.objects.get(user = request.user)
             except Tutor.DoesNotExist:
                 tutor= Tutor.objects.create(user = request.user)
+            #ola.description = 
             ola.tutor = tutor
             ola.save()
-            message = 'Course created'
-            return render(request, 'school/index.html', {'message':message}) 
+            authors  =  Profile.objects.all()
+  
+            context = {
+                    'authors':authors,
+                    'message': 'You Have just created a Topic'
+                }
+        
+            return render(request, 'school/index.html',context)
+            
+        error = form.errors
+    if request.is_ajax() and request.GET:
+        data = int(request.GET['data'])
+        sel = get_object_or_404(Select_course, id=data)
+        try:
+            description = Course_Description.objects.get(course_name=sel)
+            if description.tutor != request.user.tutor:
+                return HttpResponseForbidden()
+
+            response = description.description
+        except Course_Description.DoesNotExist:
+            response = 'Nothing here ..'
+        
+        return JsonResponse({'response':response}, safe=False)
 
     form = Tutorial(user = request.user)
     context = {
         'form':form,
+        'error':error
         #'name':name
     }
     return render(request, 'school/tutorial.html',context)
@@ -533,7 +396,7 @@ def tutorial(request):
 def tut(request):
     if request.POST:
         form =  TutCourse(request.POST)
-        if form.is_valid:
+        if form.is_valid():
             name = request.POST.get('sel')
             ola = Select_course.objects.create(sel = name)
             ola.users.add(request.user)
@@ -548,20 +411,16 @@ def tut(request):
 
 
 
-def download_file(request, downloadfile):
-    book = Novel.objects.get(pk=downloadfile)
-    fl_path = book.bookFile.path
-    filename =  f'{book.title}'
-    fl = open(fl_path,'rb')
-    mime_type = get_mime(fl)
-    if 'pdf' in mime_type:
-        ola  = pdf_view(fl_path)
-        if ola['no_of_pages'] < 300 or 'doc' in mime_type:
-            return HttpResponseRedirect(reverse('about_books', args=(downloadfile,)))
-
-    response = HttpResponse(fl, content_type = mime_type)
-    response['Content-Disposition'] =  "attachment; filename = %s" % filename
-    return response
+def pagination(request, book , page):
+    page_number = request.GET.get('page',1)
+    paginator = Paginator(book, per_page=page)
+    try:
+        books = paginator.page(page_number)
+    except PageNotAnInteger:
+        books = paginator.page(1)
+    except EmptyPage:
+        books =  paginator.page(1)
+    return books
 
 def display_course(request):
     course = Course_Description.objects.all()
@@ -571,8 +430,8 @@ def display_course(request):
     
         form = Search(request.POST)
         if form.is_valid():
-            name =  request.POST.get('bar')
-            ola = Course_Description.objects.filter(course_name__sel__icontains = name).order_by()
+            name =  form.cleaned_data['bar']
+            ola = Course_Description.objects.filter(course_name__sel__icontains = name)
             ola = pagination(request, ola, 9)
             form = Search()
             context={
@@ -596,19 +455,23 @@ def display_course(request):
 
 
 @login_required(login_url='login')
-@user_passes_test(is_registered , login_url='index')
+@user_passes_test(is_registered , login_url='prem')
 def premium(request, course_page):
     ok = []
-    course = Course_Description.objects.get(id = course_page)
+    course = get_object_or_404(Course_Description, id = course_page)
     sel_course = Select_course.objects.all()[:5]
+    
     if course.course_category.category:
         categories = course.course_category.category
     else:
         categories ='Hacking'
+    name = course.course_name
     course_cat =  Course_Description.objects.filter(course_category__category=categories)
-    image = image = Cimage.objects.filter(id = course_page)
+   
+    image = Cimage.objects.filter(name=name).first()
     description = course.description
     ola = request.user.registered_courses.values()
+    name = course.course_name.sel
     for i in ola:
         ok.append(i['sel'])
 
@@ -619,13 +482,15 @@ def premium(request, course_page):
                 'courses': sel_course,
                 'image':image,
                 'next': course,
-                'ok':ok
+                'ok':ok,
+                'name':name,
+                'coursepage':course,
                 
             }
 
     return render(request, 'school/singlecourse.html', context)
 
-
+@login_required(login_url='login')
 def mail(request):
     error = None
     if request.method == 'POST':
@@ -641,7 +506,15 @@ def mail(request):
             mail_admins(subject, message)
  
             f.save()
-            return render(request, 'school/index.html' ,{'message':'message sent'})
+            authors  =  Profile.objects.all()
+  
+            context = {
+                    'authors':authors,
+                     'message': 'Feedback Sent'
+                }
+        
+            return render(request, 'school/index.html',context)            
+           
         error = f.errors
     context = {
         'error':error
@@ -651,12 +524,435 @@ def mail(request):
 
 
 
-def handler404(request, template_name="404.html"):
-    response = render(request,"404.html")
+def handler404(request,exception, template_name="school/404.html"):
+    response = render(request,template_name)
     response.status_code = 404
     return response
 
 def handler500(request, template_name="school/500.html"):
-    response = render(request, "school/500.html")
+    response = render(request, template_name)
     response.status_code = 500
     return response
+
+
+@login_required(login_url='login')
+def payment(request):
+    error = None
+    ola = request.user
+    form = None
+    olah = PaymentTypeModel.objects.filter(
+            payment_plan__isnull=False
+        )
+    premium,_ = Premium.objects.get_or_create(user=request.user)
+    if premium.premium == True:
+        return HttpResponseRedirect('user_profile')
+    elif not ola.email or not ola.first_name or not ola.last_name :
+        olah= None
+        form = PaymentForm()
+    if request.POST:  
+        form = PaymentForm(request.POST) 
+        if form.is_valid():
+            first_name =  form.cleaned_data.get('Name')
+            last_name =  form.cleaned_data.get('LastName')
+            ola = request.user
+            ola.first_name = first_name
+            ola.last_name = last_name
+            if not request.user.email :
+                if form.clean_email :
+                    email = form.cleaned_data.get('email')
+                    ola.email = email
+            ola.save()
+            return HttpResponseRedirect(reverse('pay'))
+
+        error = form.errors
+    
+
+    
+    context = {
+        'error':error,
+        'form':form,
+        'pro_plan':olah
+    }
+    return render(request,'school/pay.html',context)
+@login_required(login_url='login')
+def profile(request):
+    Profile,_ = Premium.objects.get_or_create(user=request.user)
+    
+   
+    
+    context = {
+        
+        'user_subscription': Profile,
+
+    }
+    return render(request, 'school/user.html',context)
+
+
+def details(request, book, story):
+    if story == 'story':
+        story = get_object_or_404(Novella, id=book)
+        writer =  story.author
+        similar_books =  Novella.objects.filter(author=writer)
+        context={
+            'book':story,
+            'story': 1,
+            'related':similar_books
+        }
+        return render(request, 'school/book-details.html', context)
+    else :
+        novel = get_object_or_404(Novel , id= book)
+        writer =  novel.author
+        similar_books =  Novel.objects.filter(author=writer)
+        context={
+            'book':novel,
+            'related':similar_books
+        }
+        return render(request, 'school/book-details.html', context)
+
+
+    
+
+
+   
+
+        
+    
+
+
+
+
+
+
+
+
+@login_required(login_url='login')
+def cancelSubscription(request):
+    p = {
+        'returnedData': {'status':None}
+    }
+    user_sub,_ = Premium.objects.get_or_create(user= request.user)
+
+    if user_sub.premium is False:
+        messages.info(request, "You dont have an active membership")
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER')) #vulnerable
+    if request.POST:
+        form = Cancel(request.POST or None)
+        email =None
+        if form.is_valid():
+            email = form.cleaned_data.get('email')
+        message =  f'Enter Your Email Address'
+        if request.user.email == email:
+            try:
+                r2  = rave.Subscriptions.fetch(subscription_email=email)
+                sub_id = r2['returnedData']['data']['plansubscriptions'][0]['id']
+                p = rave.Subscriptions.cancel(sub_id) #not working
+            except RaveExceptions.PlanStatusError as e:
+                print(e.err)
+            if p['returnedData']['status'] == 'success':
+                message =  f'Your Subscription canceled {request.user.username}'
+        authors  =  Profile.objects.all()
+  
+        context = {
+                    'authors':authors,
+                     'message':message
+                }
+        
+        return render(request, 'school/index.html',context)
+        
+
+    
+    return render(request, 'school/password_reset.html', {'cancel': Cancel()})
+    
+'''
+
+from rave_python import Rave, Misc, RaveExceptions
+rave = Rave("YOUR_PUBLIC_KEY", "YOUR_PRIVATE_KEY", usingEnv = False)
+try:
+   
+    res = rave.Subscriptions.all()
+    res = rave.Subscriptions.fetch(880)
+    res = rave.Subscriptions.cancel(880)
+    print(res)
+
+except RaveExceptions.PlanStatusError as e:
+    print(e.err)
+
+except RaveExceptions.ServerError as e:
+    print(e.err)
+'''
+@login_required(login_url='login')
+def callback(request,reference,amount ):
+    res = {
+        'status':False
+    }
+    
+    try:
+        res = rave.Account.verify(reference)
+    except RaveExceptions.TransactionVerificationError as e:
+        return HttpResponseRedirect(reverse('user_profile'))
+    try:
+        res = rave.Card.verify(reference)
+    except RaveExceptions.TransactionVerificationError as e:
+        return HttpResponseRedirect(reverse('user_profile'))
+    
+    if res['vbvmessage'] == 'Approved. Successful':
+        if res['chargecode'] == '00':
+            if amount == res['amount']:
+                premium,_ = Premium.objects.get_or_create(user=request.user)
+                payment = PaymentTypeModel.objects.get(amount=amount)
+                expiry  = payment.expiry
+                premium.expiry_date = timezone.now().date()+timedelta(days=expiry)
+                premium.premium =True
+                premium.save()
+                return HttpResponseRedirect(reverse('user_profile'))
+        
+    return render(request, 'school/index.html')
+          
+
+@login_required(login_url='login')
+def take_quiz(request,topic):
+    #register Quiz, who is the quiztaker?
+    course = get_object_or_404(Course_Description, pk=topic)
+    if course.premium and request.user.premium.premium == False:
+        #quiz is for premium user redirect
+        return False, False
+    quiz = get_object_or_404(Quiz, topic=course)
+    taker,_ = QuizTakers.objects.get_or_create(user= request.user, quiz =quiz)
+    return quiz, taker
+
+@login_required(login_url='login')
+def quiz_score(request,topic):
+    course = get_object_or_404(Course_Description, pk=topic)
+    quiz = get_object_or_404(Quiz, topic=course)
+    taker = get_object_or_404(QuizTakers, quiz = quiz , user=request.user)
+    context ={
+        'topic': topic,
+    }
+    count =  Response.objects.filter(user=taker, question__quiz=quiz,answered=True).count()  
+        
+    if quiz.question_count == count :
+            taker.completed = True
+            
+    else:
+        taker.completed = False
+
+    taker.save()
+
+    if taker.completed:
+        try:
+            score  = taker.correct_answers/ quiz.question_count * 100
+        except ZeroDivisionError:
+            score = 0
+    else:
+        try:
+            #find unanswered questions on the topic
+            question = Response.objects.filter(user=taker,question__quiz=quiz, answered=False).first().question
+            questions = list(Question.objects.filter(quiz=quiz))
+            number = questions.index(question)
+            context['question']=question
+        except AttributeError:
+            course = Course_Description.objects.all()[:5]
+
+            context = {
+                
+                    'course': course
+                }
+            return render(request, 'school/courses.html',context)
+        context['answered'] = False
+        context['now'] = number
+        context['next'] = number+1
+        return render(request, 'school/quiz.html',context)
+
+    context['score'] = score
+    
+    return render(request , 'school/score.html', context)
+   
+
+@login_required(login_url='login')
+
+def question(request,topic,question):
+    quiz,taker = take_quiz(request, topic)
+   #check if there is a quiz on the course 
+    if quiz and taker is False:
+        authors  =  Profile.objects.all()
+        context = {
+                    'authors':authors,
+                    'message': 'Topic is for premium users only'
+                 }
+        return render(request , 'school/index.html',context)
+    questions = Question.objects.filter(quiz=quiz)
+
+    
+    if request.is_ajax() and request.GET:
+        try:
+            answer = int(request.GET['data'])
+        except MultiValueDictKeyError:
+            return HttpResponseRedirect(reverse('question'))
+        number  = len(questions)
+        if question <= number :
+            Questin_sent = questions[question]
+            response,_ =Response.objects.get_or_create(user=taker, question=Questin_sent)
+            
+        else:
+            return HttpResponseRedirect(reverse('index'))
+
+
+        answer_q = get_object_or_404(Answer, question = Questin_sent)
+        if answer == answer_q.option and not response.answered:
+            taker.correct_answers = taker.correct_answers+1
+            
+        if not response.answered:
+            response.answered = True
+            response.save()
+
+        count =  Response.objects.filter(user= taker, question__quiz=quiz,answered=True).count()  
+        
+       
+        if quiz.question_count == count :
+            taker.completed = True
+            #redirect to score page
+            #return HttpResponseRedirect(reverse('quiz', args=(topic, )))
+        else:
+            taker.completed = False
+    
+
+        taker.save()    # return to score page
+
+        answer = serializers.serialize('json', [answer_q, ])
+
+        
+        return JsonResponse(answer, safe=False)
+
+    
+    number  = len(questions)
+    #print(number)
+    try:
+        question_to_send = questions[question]
+        next_question = question+1
+
+    except IndexError:#redirect to score
+        return HttpResponseRedirect(reverse('quiz', args=(topic, )))
+     
+    try:
+        response,_ =Response.objects.get_or_create(user=taker, question=question_to_send)
+        respon = response.answered
+    except Response.DoesNotExist:
+        respon = False
+
+    context ={
+        'question':question_to_send,
+        'topic': topic,
+        'next' : next_question,
+        'now':question,
+        'answered': respon
+    }
+    return render(request, 'school/quiz.html',context)
+
+    
+
+
+    
+
+    
+    
+
+    
+@login_required(login_url='login')
+@user_passes_test(is_tutor, login_url='courses')
+def create_quiz(request):
+    question_created = None
+    if request.POST:
+        form =  QuestionForm(request.POST)
+        if form.is_valid():
+            course = form.cleaned_data.get('course')
+            course = get_object_or_404(Course_Description, id=course)
+            quiz_description = form.cleaned_data.get('quiz_description')
+            question = form.cleaned_data.get('question')
+            option1 = form.cleaned_data.get('option1')
+            option2 = form.cleaned_data.get('option2')
+            option3 = form.cleaned_data.get('option3') #check cleaned data
+            option4 = form.cleaned_data.get('option4')
+            answer = form.cleaned_data.get('answer')
+            feedback = form.cleaned_data.get('feedback')
+            name = course.course_name.sel
+            quiz, _ = Quiz.objects.get_or_create(topic=course)
+            if _ is True:
+                quiz.name= name
+                quiz.description= quiz_description
+                quiz.save()
+            created  = Question.objects.create(
+                quiz = quiz,
+                question_asked = question,
+                option1 = option1,
+                option2 = option2,
+                option3 = option3,
+                option4 = option4
+            )
+            Answer.objects.create(
+                question = created,
+                feedback = feedback,
+                option = answer
+
+            )
+            question_created = 'Question Added add another'
+
+
+
+    form = QuestionForm()
+    context ={
+        'form':form,
+        'quest':question_created
+    }
+    return render(request, 'school/quizpage.html', context)
+    
+ 
+@login_required(login_url='login')
+@user_passes_test(is_tutor, login_url='courses')
+def display_questions(request):
+    questions = Question.objects.all().order_by('quiz__topic')
+    context = {
+        'question': questions
+    }
+
+    return render(request, 'school/quizdisplay.html', context)    
+    
+@login_required(login_url='login')
+@user_passes_test(is_tutor, login_url='courses')
+def edit_quiz(request, edit_or_del, num):
+
+    if edit_or_del == 'edit':
+        o  =  get_object_or_404(Question, id=num)
+        topic = o.quiz.topic
+        options = list(o.answer.options)
+        instance ={
+            'course' : (topic.id,topic.course_name) ,
+            'quiz_description' : o.quiz.description ,
+            'question' : o.question_asked ,
+            'option1' : o.option1 ,
+            'option2' : o.option2,
+            'option3' : o.option3,
+            'option4' : o.option4,
+            'answer' : options[o.answer.option],
+            'feedback' : o.answer.feedback
+        }
+        form  =  QuestionForm(initial=instance)
+        
+        question_created = None
+        context ={
+        'form':form,
+        'quest':question_created
+        }
+        return render(request, 'school/quizpage.html', context)
+
+
+    if edit_or_del == 'delete':
+        question =get_object_or_404(Question, id=num)
+        if question.quiz.topic.tutor == request.user.tutor:
+
+            question.delete()
+            
+        else:
+            return HttpResponseForbidden()
+
+
+    return HttpResponseRedirect(reverse('all_questions'))

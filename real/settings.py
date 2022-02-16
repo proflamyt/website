@@ -25,7 +25,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = config('DEBUG', cast=bool)
+DEBUG = True #  config('DEBUG', cast=bool)
 
 
 
@@ -42,18 +42,20 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'school.apps.SchoolConfig',
      'ckeditor',
-     'star_ratings',
     'ckeditor_uploader',
     'crispy_forms',
      'django.contrib.auth',
      'phonenumber_field',
+     'sorl.thumbnail',
  'allauth',   # <--
  'allauth.account',   # <--
  'allauth.socialaccount',   # <--
  'allauth.socialaccount.providers.google',
  'allauth.socialaccount.providers.github',
 # 'allauth.socialaccount.providers.HackerEarth',
- 'django.contrib.sites',   # <--
+ 'django.contrib.sites', 
+ 'djangorave' , # <--,
+
 ]
 
 MIDDLEWARE = [
@@ -90,21 +92,27 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'real.wsgi.application'
 
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': BASE_DIR +'/'+ 'db.sqlite3',
+    }
+}
 
 
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-DATABASES = {
-      'default': {
-        'ENGINE':'django.db.backends.postgresql_psycopg2',
-        'NAME': 'olawale',
-        'USER': 'ola',
-        'PASSWORD': 'queenkafayat',
-        'HOST': 'localhost',
-        'PORT': '5432'
-    }
-}
+# DATABASES = {
+#       'default': {
+#         'ENGINE':'django.db.backends.postgresql_psycopg2',
+#         'NAME': 'olamide',
+#         'USER': 'proflamyt',
+#         'PASSWORD': '',
+#         'HOST': 'localhost',
+#         'PORT': '5432'
+#     }
+# }
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 SERVER_EMAIL = 'seehowtv@gmail.com'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
@@ -112,9 +120,11 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_PASSWORD = config('EMAIL_PASSWORD')
 EMAIL_HOST_USER = SERVER_EMAIL
 EMAIL_PORT = 587
+DEFAULT_AUTO_FIELD='django.db.models.AutoField'
 EMAIL_USE_TLS = True
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 ADMINS = [('cHowTV', 'seehowtv@gmail.com')]
+AUTH_USER_MODEL = 'school.User'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.0/ref/settings/#auth-password-validators
@@ -198,21 +208,42 @@ STAR_RATINGS_STAR_WIDTH =15
 
  
 CKEDITOR_UPLOAD_PATH = 'uploads/'
-
+CKEDITOR_ALLOW_NONIMAGE_FILES = False
 CKEDITOR_CONFIGS = {
     'default':
     {
         'toolbar':'Custom',
         'height': 500,
+       
+        
         'toolbar_Custom': [
             ['Unlink', 'Link' , 'Image'],
             ['Styles', 'Format', 'Bold', 'Italic', 'SpellChecker', 'Undo', 'Redo'],
             ['Smiley', 'SpecialChar'],
-            ['CodeSnippet']
+            ['CodeSnippet', 'about']
         ],
         'extraPlugins':'codesnippet'
+    },
+    'novellas':{
+        'toolbar':'Custom',
+        'height': 500,
+        'width': '105%',
+        'display': 'inline-block',
+        'placeholder': 'maximize to start writing',
+        
+        'toolbar_Custom': [
+          
+            ['Styles', 'Format', 'Bold', 'Italic', 'SpellChecker', 'Undo', 'Redo'],
+            ['Smiley', 'SpecialChar'],
+            ['Indent', 'Outdent','Maximize'],
+            ['JustifyLeft', 'JustifyCenter','JustifyRight','JustifyBlock']
+        ],
+        
     }
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
+
+RAVE_SANDBOX = True
+API_key = config('API_KEY')

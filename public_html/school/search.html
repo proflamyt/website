@@ -1,144 +1,147 @@
-<!--
-
-	Author: W3layouts
-	Author URL: http://w3layouts.com
-	License: Creative Commons Attribution 3.0 Unported
-	License URL: http://creativecommons.org/licenses/by/3.0/
--->
-
-{% load ratings %}
 <!DOCTYPE html>
-<html lang="zxx">
+
+<html lang="en">
+
 {% load static %}
+{% load ratings %}
+
+
 <head>
-	<title>Books</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta charset="utf-8">
-	<meta name="keywords" content="Weblog a Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
-Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
-
-	<script>
-		addEventListener("load", function () {
-			setTimeout(hideURLbar, 0);
-		}, false);
-
-		function hideURLbar() {
-			window.scrollTo(0, 1);
-		}
-	</script>
-	<link href=" {% static 'ok/css/bootstrap.css' %}"rel='stylesheet' type='text/css' />
-	<link rel="stylesheet" href=" {% static 'ok/css/single.css'%}">
-	<link href=" {% static 'ok/css/style.css'%}" rel='stylesheet' type='text/css' />
-	<link href=" {% static '/ok/css/fontawesome-all.css'%}" rel="stylesheet">
-	<link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
-	    rel="stylesheet">
-<link rel="stylesheet" type="text/css" href="{% static 'star-ratings/css/star-ratings.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>cHowTv - Book </title>
+    <link rel="stylesheet" href="{% static 'aline/css/loader/loaders.css' %}">
+    <link rel="stylesheet" href="{% static 'aline/css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'aline/css/swiper.css' %}">
+    <link rel="stylesheet" href="{% static 'aline/css/aos/aos.css' %}">
+    <link rel="stylesheet" href="{% static 'aline/css/font-awesome/font-awesome.css' %}">
+    <link rel="stylesheet" href="{% static 'aline/css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'aline/css/responsive.css' %}">
+   <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
 <script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+</head>
 <style type="text/css">
-
-
-
-.sticky {
-  position: fixed;
-  top: 0;
-  width: 100%;
-  z-index: 5000;
+	.filter-tabs li {
+	font-size: 14px;
 }
-
-.sticky + .content {
-  padding-top: 102px;
+.author-pic {
+  width: 170px;
+  height: 170px;
+  border-radius: 50%;
+  background: #fff url("{{ author.profile_image.url }}") no-repeat center;
+  background-size: cover;
+  margin: 30px auto 0;
+  position: relative;
+}
+.banner-inner {
+	background: -webkit-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url(static/images/1.jpg) no-repeat;
+	background: -moz-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url(../images/banner4.jpg) no-repeat;
+	background: -ms-linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url(../images/banner4.jpg) no-repeat;
+	background: linear-gradient(rgba(23, 22, 23, 0.2), rgba(23, 22, 23, 0.5)), url(/static/images/1.jpg) no-repeat center;
+	background-size: cover;
+	min-height: 230px;
 }
 </style>
-</head>
 
-	<!--Header-->
-
-
-	<!--//header-->
 <body>
-	<!--Header-->
 
-	<header id="myHeader">
-		<div class="top-bar_sub_w3layouts container-fluid">
-			<div class="row">
-				<div class="col-md-4 logo text-left">
-					<a class="navbar-brand" href="{% url 'index' %}">
-						<i class="fa fa-book"></i> cHowTV</a>
-				</div>
-				<div class="col-md-4 top-forms text-center mt-lg-3 mt-md-1 mt-0">
-					<span>Welcome {{user.username}}</span>
-					<span class="mx-lg-4 mx-md-2  mx-1">
-						{% if user.profile %}
-						<a href="{% url 'profile' %}">
-							<i class="fas fa-user"></i> View Your Profile</a>
+    <!-- Loader Start Here -->
+    <div class="css-loader">
+        <div class="ball-pulse d-flex align-items-center justify-content-center"></div>
+    </div>
+    <!-- Loader End Here -->
+    <!-- Header Start Here -->
+    <header>
+    		<div class="banner-inner">
+
+	</div>
+        <div class="header-container">
+
+            <div class="container">
+
+
+                <div class="logo d-flex"> 
+                    <a href="{% url 'index' %}" class="d-inline-block m-auto"><img src="{% static 'aline/images/logo.png' %}" alt="cHowTv"></a>
+                </div>
+                <nav class="d-flex justify-content-between align-items-center main-nav"> <strong><h6 style="font-style:italic;font-weight: 800; color: #FEB103;" class="d-inline-block"><i class="fa fa-book"> </i>cHow TV</h6></strong>
+                    <a href="#" class="menu-icon"><i class="fa fa-align-center"></i></a>
+                    <ul class="nav main-menu justify-self-center text-uppercase d-none d-md-flex">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'index' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                        </li>
+                       
+                        <li class="nav-item">
+                        	{% if user.profile %}
+						<a class="nav-link" href="{% url 'profile' user.profile.id %}">
+							View Your Profile</a>
 
 						{% else %}
-						<a href="{% url 'author' %}">
-							<i class="fas fa-user"></i> Become an Author</a>
+						<a class="nav-link" href="{% url 'author' %}">
+							 Become an Author</a>
 						
 						{% endif %}
-					</span>
-					
-				</div>
-				<div class="col-md-4 log-icons text-right">
+                          
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="{% url 'upload' %}">Upload Book</a>
+                        </li>
+                        <li class="nav-item">
 
-					<ul class="social_list1 mt-3">
+                            <a class="nav-link" href="{% url 'contact' %}">contact</a>
+                        </li>
+                    </ul>
+                    <div class="nav cart-login">
+                       
+                                    {% if user.profile %}
+                        <a  class="login" href="{% url 'profile' user.profile.id %}">
+                            <i class="fa fa-user"></i> <small>View Profile </small></a>
 
-						<li>
-							<a href="https://facebook.com/cHowTv1" class="facebook1 mx-2">
-								<i class="fab fa-facebook-f"></i>
-
-							</a>
-						</li>
-						<li>
-							<a href="https://twitter.com/cHowTv1" class="twitter2">
-								<i class="fab fa-twitter"></i>
-
-							</a>
-						</li>
-						<li>
-							<a href="https://instagram.com/how_tv" class="dribble3 mx-2">
-								<i class="fab fa-instagram"></i>
-							</a>
-						</li>
-						<li>
-							<a href="https://api.whatsapp.com/+2348025729256" class="pin">
-								<i class="fab fa-whatsapp"></i>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-
-		<div class="header_top" id="home">
-			<nav class="navbar navbar-expand-lg navbar-light bg-light">
-				<button class="navbar-toggler navbar-toggler-right mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-						aria-expanded="false" aria-label="Toggle navigation">
-						<span class="navbar-toggler-icon"></span>
-				</button>
-
-
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav mr-auto">
-						<li class="nav-item ">
-								<a class="nav-link" href="{% url 'index' %}">Home
-								<span class="sr-only">(current)</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="{% url 'upload' %}">Upload Book</a>
-						</li>
-				<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
-							    aria-expanded="false">
-								Become an Author
-							</a>
-							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        {% else %}
+                        <a class="login" href="{% url 'author' %}">
+                            <i class="fa fa-user"></i> <small>Become an Author </small>  </a>
+                        
+                        {% endif %}
+                        
+                    </div>
+                </nav>
+            </div>
+            <div class="offcanvas">
+                <a href="#" class="close"><i class="fa fa-close"></i></a>
+                <nav class="d-md-none">
+                    <ul class="list-unstyled">
+                        <li>
+                            <a href="{% url 'index' %}">Home</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'about' %}">About</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'about' %}">Pages</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'create' %}">Write</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'upload' %}">Upload Books</a>
+                        </li>
+                        <li>
+                            <a href="{% url 'contact' %}">contact</a>
+                        </li>
+                    </ul>
+                </nav>
+                <address class="d-none d-md-block">
+                    <img src="{% static 'aline/images/logo-white.png' %}" alt="cHowTv">
+                    current author : <a style="color: black;" href="{% url 'profile' author.id %}">{{ author.authorName|title }}</a>
+                    <br>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
 
 								{% if user.profile %}
 
-								<a class="dropdown-item" href="{% url 'profile' %}"><span> <i class="fas fa-lock"></i> </span> Author : {{ user.profile.authorName }} </a>
+								<a class="dropdown-item" href="{% url 'profile' user.profile.id %}"><span> <i class="fas fa-lock"></i> </span> Author : {{ user.profile.authorName }} </a>
 								<div class="dropdown-divider"></div>
 								<a class="dropdown-item" href="{% url 'edit' %}"> Edit Your Profile </a>
 			
@@ -148,481 +151,442 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<a class="dropdown-item" href="{% url 'upload' %}"><span> <i class="far fa-user"></i> </span> Upload</a>
 								{% endif %}
 							</div>
-						</li>
-						
-					</ul>
+                    <br>
+                    {{ author.about_me}}<br>
+                    
+                </address>
+                <div class="social-link d-none d-md-block">
+                  
+                    <a href="twitter.com/{{ author.twitter}}"><i class="fa fa-twitter"></i></a>
+                              
+                    <a href="instagram.com/{{ author.instagram }}"><i class="fa fa-instagram"></i></a>
+                    
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- Header End Here -->
+    <main>
+        <!-- Slider Start Here -->
+        
 
-					<form action="{% url 'download' %}" method="post" class="form-inline my-2 my-lg-0 header-search"> 	{% csrf_token %}
-						<input class="form-control mr-sm-2" type="search" placeholder="Search here..." name="bar" required="">
-						<button class="btn btn1 my-2 my-sm-0" type="submit">
-							<i class="fas fa-search"></i>
-						</button>
-					</form>
-
-
-
-				</div>
-			</nav>
-
-		</div>
-	</header>
-	<!--//header-->
-	<div class="banner-inner">
-	</div>
-	<ol class="breadcrumb">
-		<li class="breadcrumb-item">
-			<a href="{% url 'index' %}">Home</a>
-		</li>
-		<li class="breadcrumb-item active">Read Book</li>
-	</ol>
-
-	<!--//banner-->
 	
 
 
+        <!-- Slider End Here -->
+        <!-- Banner Start Here -->
+        <section class="banner">
+            <div class="container">
+                <div class="search text-center">
+                    <h4>Find the Latest Book.......</h4>
+                    <form action="{% url 'download' %}" method="POST">
+                        {% csrf_token %}
+                        <input type="text" name="bar" placeholder="Enter Author Name">
+                    </form>
+                </div>
+
+
+
+          
+                <div class="row">
+                    <div class="col-lg-4">
+                        <div class="special-offer">
+                            <img src="{% static 'aline/images/special-offer.png' %}" alt="Special Offer">
+                            <h4>{{ top.0.title|title }}</h4>
+                            <small>By</small>
+                            <h3>{{ top.0.author }}</h3>
+                            <p>{{ top.0.summary|safe| truncatewords:10 }}
+                            </p>
+                            <a href="#">Read <i class="fa fa-angle-right"></i></a>
+                        </div>
+                    </div>
+                    <div class="col-lg-8">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="best-sell">
+                                    <img src="{% static 'aline/images/special-sell.jpg' %}" alt="Special Sell">
+                                    <div class="banner-content">
+                                        <p>Best seller Books<a href="#">Read <i class="fa fa-angle-right"></i></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="feature-book">
+                                    <img src="{% static 'aline/images/featured-book.jpg' %}" alt="Featured Book">
+                                    <div class="banner-content">
+                                        <p>Featured Books</p>
+                                        <a href="#">Read <i class="fa fa-angle-right"></i></a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row no-gutters summer-sale">
+                            <div class="col-md-5 content-overlay">
+                                <div class="banner-content">
+                                    <p class="text-uppercase">{{ top.1.title|title }} <span class="text-capitalize"></span>
+                                    </p>
+                                    <a href="#">Read <i class="fa fa-angle-right"></i></a>
+                                </div>
+                            </div>
+                            <div class="col-md-7 summer-sale-img">
+                                <img src="{% static 'aline/images/summer-sale.jpg' %}" alt="Summer Sale">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Banner End Here -->
+        <!-- Book Tab Start Here -->
+        {% if top or story  %}
+        {% if not novel %}
+        <div class="products-tab text-center">
+            <div class="container">
+                <ul class="filter-tabs nav justify-content-center" >
+                    <li data-filter="all" class="active">All</li>
+                    <li data-filter="best-selling">Best Selling</li>
+                    {% for genres in genre %}
+                    <li data-filter="{{genres}}">{{genres}}</li>
+                    {% endfor %}
+                </ul>
+                <div class="row">
+
+                    <div class="filtr-container">
+
+                        {% for popular in top %}
+
+                        <div class="filtr-item col-sm-6 col-md-4 col-lg-3" data-category="best-selling,  {% for ola in popular.genre.values %} {{ola.name}}, {% endfor %} "
+                            data-sort="value">
+                            <div class="single-book" data-aos="fade-up" data-aos-delay="100">
+                                <img src="{{ popular.bookImage.url }}" style="width: 179px;height: 209px;"  alt="Book 1">
+                                <div class="book-btn d-flex justify-content-center">
+                                   <a href="{% url 'details' 'book' popular.id %}"><i class="fa fa-book"></i></a>
+                                    <a href="{% url 'about_books' popular.id %}"><i class="fa fa-external-link"></i></a>
+                                </div>
+                                <div class="book-info">
+                                    <div class="price">{% ratings popular %}</div>
+                                    <h4>{{ popular.title | title }}</h4>
+
+                                    <h6>By <span>{{ popular.author.authorName }}</span></h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+
+{% if story %}
+                        {% for book in story %}
+                        <div class="filtr-item col-sm-6 col-md-4 col-lg-3" data-category="best-selling ,{% for ola in popular.genre.values %} {{ola.name}}, {% endfor %}" data-sort="value">
+                            <div class="single-book" data-aos="fade-up" data-aos-delay="200">
+                                <img src="{% static 'aline/images/book-2.png' %}" alt="Book 1">
+                                <div class="book-btn d-flex justify-content-center">
+                                           <a href="{% url 'details' 'story' book.id %}"><i class="fa fa-book"></i></a>
+                                    <a href="{% url 'read' book.slug %}"> <i class="fa fa-external-link"></i></a>
+                                </div>
+                                <div class="book-info">
+
+                                    <div class="price">{% ratings book %}</div>
+                                    <h4>{{ book.title | title}}</h4>
+                                    <h6>By <span> <a href="{% url 'profile' book.author.id %}"> {{ book.author.authorName }} </a></span></h6>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+{% endfor %}
+                        {% endif %}
+                       
+                       
+                       
+                      
+
+
+                    </div>
+                </div>
+               
+
+
+                {% if top.has_other_pages %}
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination justify-content-left mt-4">
+                                {% if top.has_previous %}
+                                <li class="page-item ">
+                                    <a class="page-link" href="?page = {{top.previous_page_number }}" tabindex="-1">Previous</a>
+                                </li>
+                                {% else %}
+                            
+                                    <li class="page-item disabled">
+                                    <a class="page-link" href="#" tabindex="-1">Previous</a>
+                                </li>
+                                {% endif %}
+
+                                {% for i in top.paginator.page_range %}
+                                    {% if top.number == i %}
+                                <li class="page-item active">
+                                <a class="page-link" href="#" >{{i}}</a>
+                                </li>
+                                {% else %}
+                                <li class="page-item ">
+                                    <a class="page-link" href="?page={{ i }}">{{i}}</a>
+                                </li>
+
+                                {% endif %}
+                                {% endfor %}
+
+
+                                {%  if top.has_next %}
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{top.next_page_number}}">Next</a>
+                                </li>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page={{top.paginator.num_pages}}">Last</a>
+                                </li>
+                                {%else %}
+                                <li class="page-item disabled">
+                                    <a class="page-link" href="#" >Next</a>
+                                </li>
+                                {% endif %}
+                            </ul>
+                            
+                        </nav>{% endif %}
 
 
 
 
 
-<section class="main-content-w3layouts-agileits">
-		<div class="container">
-			{% if name%}
-			<h3 class="tittle"><span>B</span>ook <span>R</span>elating to '{{name}}'</h3> {% endif %}
-			<div class="inner-sec">
-				<!--left-->
-				<div class="left-blog-info-w3layouts-agileits text-left">
-					<div class="row">
-						{% if novel %}
-						{% for book in novel %}
-						<div class="col-lg-4 card">
-							<a href="{% url 'index' %}">
-								<img src="{{book.bookImage.url}}" class="card-img-top img-fluid" alt="">
-							</a>
-							</a>
-							<div class="card-body">
-								<ul class="blog-icons my-4">
-									<li>
-										<a href="#">
-											<i class="far fa-calendar-alt"></i> {{book.date_uploaded }}</a>
-									</li>
-									<li class="mx-2">
-										<a href="#">
-											<i class="far fa-user"></i> {{ book.author.authorName }}</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="fas fa-thumbs-up"></i>Rate: &nbsp; {% ratings book %}</a>
-									</li>
-
-								</ul>
-								<h5 class="card-title ">
-									<a href="{% url 'about_books' book.id %}">Title: {{ book.title }}</a>
-								</h5>
-								<p class="card-text mb-3">{{book.summary | safe | truncatewords:10 }} </p>
-								<a href="{% url 'file' book.id|urlencode %}" class="btn btn-primary read-m"> <i class="fa fa-download"></i> Download</a>
-							</div>
-						</div>
-					{% endfor %}
-						{% endif %}
-{% if novel.has_other_pages %}
-						<nav aria-label="Page navigation example">
-							<ul class="pagination justify-content-left mt-4">
-								{% if novel.has_previous %}
-								<li class="page-item ">
-									<a class="page-link" href="?page = {{novel.previous_page_number }}" tabindex="-1">Previous</a>
-								</li>
-								{% else %}
-							
-									<li class="page-item disabled">
-									<a class="page-link" href="#" tabindex="-1">Previous</a>
-								</li>
-								{% endif %}
-
-								{% for i in novel.paginator.page_range %}
-									{% if novel.number == i %}
-								<li class="page-item active">
-								<a class="page-link" href="#" >{{i}}</a>
-								</li>
-								{% else %}
-								<li class="page-item ">
-									<a class="page-link" href="?page={{ i }}">{{i}}</a>
-								</li>
-
-								{% endif %}
-								{% endfor %}
+            </div>
+        </div>{% endif %}{% endif %}
+        <!-- Book Tab End Here -->
+        <!-- Review Start Here -->
+        <div class="review">
+            <div class="container position-relative">
+                <div class="row">
+                    <div class="offset-lg-2 col-lg-8">
 
 
-								{%  if novel.has_next %}
-								<li class="page-item">
-									<a class="page-link" href="?page={{novel.next_page_number}}">Next</a>
-								</li>
-								<li class="page-item">
-									<a class="page-link" href="?page={{novel.paginator.num_pages}}">Last</a>
-								</li>
-								{%else %}
-								<li class="page-item disabled">
-									<a class="page-link" href="#" >Next</a>
-								</li>
-								{% endif %}
-							</ul>
-							
-						</nav>{% endif %}
+
+                        <div class="swiper-container review-slider">
+                            <div class="swiper-wrapper">
+                                <div class="swiper-slide text-center">
+                                    <p>“Love reading nigerian books here .”</p>
+                                    <span>olawale olamide - <span>Reader</span></span>
+                                </div>
+                                <div class="swiper-slide text-center">
+                                    <p>“Well i think the authors can do better ”</p>
+                                    <span>earl tbam - <span>Reader</span></span>
+                                </div>
+                                <div class="swiper-slide text-center">
+                                    <p>“READ it helps”</p>
+                                    <span>Count lamxy - <span>Reader</span></span>
+                                </div>
+                            </div>
+                        </div>
 
 
-						<div class="container">
-{% if genres %}
-<h3 class="tittle"> {{ genres | title }} <span>N</span>ovels </h3>
-<br><br>
-{% else %}
-							<h3 class="tittle"> <span>P</span>opular <span>N</span>ovels</h3>
-							<br><br>
+
+
+
+                    </div>
+                </div>
+                <!-- Add Arrows -->
+                <div class="control-btn swiper-button-next">N<br>E<br>X<br>T</div>
+                <div class="control-btn swiper-button-prev">P<br>R<br>E<br>V</div>
+            </div>
+        </div>
+        <!-- Review End Here -->
+        <!-- Blog Start Here -->
+        <section class="blog">
+            <div class="container">
+                <h2 class="title text-center">Featured Author </h2>
+                <div class="row">
+                    <div class="col-xl-9">
+                        <div class="swiper-container post-slider">
+                            <div class="swiper-wrapper">
+
+
+                                <div class="swiper-slide">
+{% if author.favorite %}
+
+
+                                   
+	{% for i in author.favorite.values %} 
+
+                                    <div class="single-post" data-aos="fade-left">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <img src="/book/{{i.bookImage }}"
+                                                    alt="The Bookshop Events Are Coming?" class="w-100">
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="categories text-uppercase">
+                                                   Favorite Book
+                                                </div>
+                                                <h2 class="post-title">{{ i.title| title }}
+                                                </h2>
+                                                <div class="meta">
+                                                    {{ i.date_uploaded }}
+                                                    
+                                                    
+                                                </div>
+                                                <p> {{ i.summary|safe| truncatewords:10 }} </p>
+                                                <div class="more-share">
+                                                    <a href="{% url 'file' i.id|urlencode %}" class="more">READ MORE <i
+                                                            class="fa fa-angle-right"></i></a>
+                                                    <img src="{% static 'aline/images/zigzag.png' %}" alt="Zigzag">
+                                                    SHARE
+                                                    <a href="#" class="share"><i class="fa fa-facebook"></i></a>
+                                                    <a href="#" class="share"><i class="fa fa-twitter"></i></a>
+                                                    <a href="#" class="share"><i class="fa fa-instagram"></i></a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+{% endfor %}
+
 
 {% endif %}
 
 
+                                </div>
 
-<div class="row">
-{% for popular in top %}
 
-						<div class="col-lg-4 card my-lg-4 my-md-1 my-0">
-							<a href="{% url 'index' %}">
-								<img src="{{ popular.bookImage.url }}" class="card-img-top img-fluid" alt="">
-							</a>
-							<div class="card-body">
-								<ul class="blog-icons my-4">
-									<li>
-										<a href="#">
-											<i class="far fa-calendar-alt"></i> {{ popular.date_uploaded }}</a>
-									</li>
-									<li class="mx-2">
-										<a href="#">
-											<i class="far fa-user"></i> {{ popular.author.authorName }}</a>
-									</li>
-									<li>
-										<a href="#">
-											<i class="fas fa-thumbs-up"></i>Rate: &nbsp; {% ratings popular %}</a>
-									</li>
+                              
 
-								</ul>
-								<h5 class="card-title">
-									<a href="{% url 'about_books' popular.id %}">Title : {{ popular.title }}</a>
-								</h5>
-								<p class="card-text mb-3">{{popular.summary | truncatewords:10 | safe}}</p>
-		<a href="{% url 'file' popular.id|urlencode %}" class="btn btn-primary read-m"> <i class="fa fa-download"></i>Download</a>
-							</div>
-						</div>
+
+
+
+
+                               
+
+
+
+                            </div>
+                            <!-- Add Control -->
+                            <div class="swiper-paginations"></div>
+                        </div>
+                    </div>
+
+                    	 
+                    <div class="col-xl-3 single-post swiper-slide" data-aos="fade-right">
+                        <div class="best-author text-center swiper-slide">
+                            <h2>Author</h2>
+                            <div class="author-pic"></div>
+                            <a style="color: black;" href="{% url 'profile' author.id %}">{{ author.authorName|title }}</a>
+                            <p>{{ author.about_me }}</p>
+                            <h6>Follow Me</h6>
+                            <ul class="nav justify-content-center">
+                              
+                                <li><a href="twitter.com/{{ author.twitter}}"><i class="fa fa-twitter"></i></a></li>
+                              
+                                <li><a href="instagram.com/{{ author.instagram }}"><i class="fa fa-instagram"></i></a></li>
+                                
+                            </ul>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+        </section>
+        <!-- Blog End Here -->
+        <!-- Instafeed Start Here -->
+        <div class="swiper-container instafeed-slider">
+            <div id="instafeed" class="swiper-wrapper">
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta1.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta2.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta3.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta4.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta5.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta6.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta1.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta2.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta3.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta4.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta5.jpg' %}" alt="Instagram" /></a></div>
+                <div class="swiper-slide"><a href="#"><img src="{% static 'aline/images/insta6.jpg' %}" alt="Instagram" /></a></div>
+            </div>
+        </div>
+        <!-- Instafeed End Here -->
+        <!-- Social Link Start Here -->
+        <div class="social">
+            <div class="container">
+                <div class="swiper-container social-slider">
+                    <div class="swiper-wrapper d-flex justify-content-between">
+                        <a class="swiper-slide" href="https://facebook.com/cHowTv1"><i class="fa fa-facebook"></i> Facebook</a>
+                        <a class="swiper-slide" href="https://twitter.com/cHowTv1"><i class="fa fa-twitter"></i> Twitter</a>
+                        <a class="swiper-slide" href="https://wa.me/+2348025729256"><i class="fa fa-whatsapp"></i> WhatsApp</a>
+                        <a class="swiper-slide" href="https://instagram.com/how_tv"><i class="fa fa-instagram"></i> Instagram</a>
+                
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Social Link End Here -->
+    </main>
+    <!-- Footer Start Here -->
+    <footer>
+        <div class="foot-top">
+            <div class="container">
+                <div class="logo d-flex">
+                    <a href="{% url 'index' %}" class="d-inline-block m-auto"><img src="{% static 'aline/images/logo.png' %}" alt="cHowTv"></a>
+                </div>
+                <nav class="d-flex justify-content-center align-items-center main-nav">
+                   <ul class="nav main-menu justify-self-center text-uppercase d-none d-md-flex">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="{% url 'index' %}">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
+                        </li>
+                        
+                        <li class="nav-item">
+                        	{% if user.profile %}
+						<a class="nav-link" href="{% url 'profile' user.profile.id %}">
+							View Your Profile</a>
+
+						{% else %}
+						<a class="nav-link" href="{% url 'author' %}">
+							 Become an Author</a>
 						
-	{% endfor %}					
-					<div class="container">
-		<h3 class="title">
-<span>G</span>enres
-</h3>
+						{% endif %}
+                          
+                        </li>
+                        <li class="nav-item">
+                           <a class="nav-link" href="{% url 'upload' %}">Upload Book</a>
+                        </li>
+                        <li class="nav-item">
+
+                            <a class="nav-link" href="{% url 'contact' %}">contact</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+       
+    </footer>
+    <!-- Footer End Here -->
+   <script src="{% static 'aline/js/jquery-3.3.1.js' %}"></script>
+    <script src="{% static 'aline/js/bootstrap.js' %}"></script>
+    <script src="{% static 'aline/js/swiper.min.js' %}"></script>
+    <script src="{% static 'aline/js/aos.js' %}"></script>
+    <script src="{% static 'aline/js/loaders.css.js' %}"></script>
+    <script src="{% static 'aline/js/jquery.filterizr.min.js' %}"></script>
+    <script src="{% static 'aline/js/main.js' %}"></script>
 
-<ol class="list-group-horizontal-md">
-	 {% if genre %} 
-								 {% for genres in genre %}
-									<li class="list-group-item d-flex justify-content-between align-items-center">
-									 <a href="{% url 'genre' genres.id %}">{{ genres }}</a> 
-									  
-									</li>
-									
-									{% endfor %}
-					{% endif %}
-
-</ol>
-
-	</div>
-
-					
-						{% if top.has_other_pages %}
-						<nav aria-label="Page navigation example">
-							<ul class="pagination justify-content-left mt-4">
-								{% if top.has_previous %}
-								<li class="page-item ">
-									<a class="page-link" href="?page = {{top.previous_page_number }}" tabindex="-1">Previous</a>
-								</li>
-								{% else %}
-							
-									<li class="page-item disabled">
-									<a class="page-link" href="#" tabindex="-1">Previous</a>
-								</li>
-								{% endif %}
-
-								{% for i in top.paginator.page_range %}
-									{% if top.number == i %}
-								<li class="page-item active">
-								<a class="page-link" href="#" >{{i}}</a>
-								</li>
-								{% else %}
-								<li class="page-item ">
-									<a class="page-link" href="?page={{ i }}">{{i}}</a>
-								</li>
-
-								{% endif %}
-								{% endfor %}
-
-
-								{%  if top.has_next %}
-								<li class="page-item">
-									<a class="page-link" href="?page={{top.next_page_number}}">Next</a>
-								</li>
-								<li class="page-item">
-									<a class="page-link" href="?page={{top.paginator.num_pages}}">Last</a>
-								</li>
-								{%else %}
-								<li class="page-item disabled">
-									<a class="page-link" href="#" >Next</a>
-								</li>
-								{% endif %}
-							</ul>
-							{% endif %}
-						</nav>
-</div>
-
-</div>
-
-
-
-
-					</div>
-					<!--//left-->
-				</div>
-			</div>
-		</div>
-	</section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-	<footer>
-		<div class="container">
-			<div class="row">
-				<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
-					<h3>About US</h3>
-					<p>We offer you the opportunity to tap from this reforming resource from modern tech innovators in
-creating facilitating and engaging educational experiences yet to be explored from the four walls
-of the classroom....</p>
-					<div class="read">
-						<a href="{% url 'about'  %}" class="btn btn-primary read-m">Read More</a>
-					</div>
-				</div>
-				<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
-
-					<div class="tech-btm">
-						<h3>Latest Posts</h3>
-						<div class="blog-grids row mb-3">
-							<div class="col-md-5 blog-grid-left">
-								<a href="{% url 'about'  %}">
-									<img src="{% static 'images/1.jpg' %}" class="img-fluid" alt="">
-								</a>
-							</div>
-							<div class="col-md-7 blog-grid-right">
-
-								<h5>
-									<a href="{% url 'index'  %}">Hello {{ user.get_username }} </a>
-								</h5>
-								
-							</div>
-
-						</div>
-						<div class="blog-grids row mb-3">
-							<div class="col-md-5 blog-grid-left">
-								<a href="{% url 'index'%}">
-									<img src="{% static 'images/4.jpg' %}" class="img-fluid" alt="">
-								</a>
-							</div>
-							<div class="col-md-7 blog-grid-right">
-
-								<h5>
-									<a href="{% url 'index' %}"> Checked out our courses yet ? {{ user.username }} </a>
-								</h5>
-								<div class="sub-meta">
-									<span>
-									
-								</div>
-							</div>
-
-						</div>
-						<div class="blog-grids row mb-3">
-							<div class="col-md-5 blog-grid-left">
-								<a href="{% url 'index'  %}">
-									<img src="{% static 'images/2.jpg' %}" class="img-fluid" alt="">
-								</a>
-							</div>
-							<div class="col-md-7 blog-grid-right">
-
-								<h5>
-									<a href="{% url 'index'  %}"> We At cHowTV ......</a>
-								</h5>
-								<div class="sub-meta">
-									<span>
-										
-								</div>
-							</div>
-
-						</div>
-					</div>
-				</div>
-				<!-- subscribe -->
-				
-			</div>
-			<!-- footer -->
-			<div class="footer-cpy text-center">
-				<div class="footer-social">
-					<div class="copyrighttop">
-						<ul>
-							<li class="mx-3">
-								<a class="facebook" href="https://facebook.com/cHowTv1">
-									<i class="fab fa-facebook-f"></i>
-									<span>Facebook</span>
-								</a>
-							</li>
-							<li>
-								<a class="facebook" href="https://twitter.com/cHowTv1">
-									<i class="fab fa-twitter"></i>
-									<span>Twitter</span>
-								</a>
-							</li>
-							<li class="mx-3">
-								<a class="facebook" href="https://instagram.com/how_tv">
-									<i class="fab fa-instagram"></i>
-									<span>Instagram</span>
-								</a>
-							</li>
-							<li>
-								<a class="facebook" href="https://wa.me/+2348025729256">
-									<i class="fab fa-whatsapp"></i>
-									<span>WhatsApp</span>
-								</a>
-							</li>
-						</ul>
-
-					</div>
-				</div>
-
-			</div>
-
-			<!-- //footer -->
-
-
-		</div>
-	</footer>
-
-	
-	<!---->
-	<!-- js -->
-	<script src=" {% static 'ok/js/jquery-2.2.3.min.js' %} "></script>
-	<!-- //js -->
-	<!--/ start-smoth-scrolling -->
-	<script src=" {% static 'ok/js/move-top.js' %}  "></script>
-	<script src=" {% static 'ok/js/easing.js' %} "></script>
-	<script>
-		jQuery(document).ready(function ($) {
-			$(".scroll").click(function (event) {
-				event.preventDefault();
-				$('html,body').animate({
-					scrollTop: $(this.hash).offset().top
-				}, 900);
-			});
-		});
-	</script>
-	<!--// end-smoth-scrolling -->
-
-	<script>
-		$(document).ready(function () {
-			/*
-									var defaults = {
-							  			containerID: 'toTop', // fading element id
-										containerHoverID: 'toTopHover', // fading element hover id
-										scrollSpeed: 1200,
-										easingType: 'linear' 
-							 		};
-									*/
-
-			$().UItoTop({
-				easingType: 'easeOutQuart'
-			});
-
-		});
-	</script>
-	<a href="#home" class="scroll" id="toTop" style="display: block;">
-		<span id="toTopHover" style="opacity: 1;"> </span>
-	</a>
-
-	<!-- //Custom-JavaScript-File-Links -->
-	<script src=" {% static 'ok/js/bootstrap.js' %}"></script>
-
-
-
-</script>
 <script>
-window.onscroll = function() {myFunction()};
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
 
-var header = document.getElementById("myHeader");
-var sticky = header.offsetTop;
-
-function myFunction() {
-  if (window.pageYOffset > sticky) {
-    header.classList.add("sticky");
-  } else {
-    header.classList.remove("sticky");
-  }
-}
+gtag('config', 'UA-65003908-1');
 </script>
+
 </body>
 
+
 </html>
-
-

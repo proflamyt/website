@@ -35,7 +35,7 @@ p.capitalize {
 					<a href="{% url 'index' %}">Home</a>
 					<span>| |</span>
 				</li>
-				<li>Courses</li>
+				<li>Profile</li>
 			</ul>
 		</div>
 	</div>
@@ -52,50 +52,80 @@ p.capitalize {
 
 				</div>
 			</div>
-			<div class="blog-info">
-				<div class="col-xs-4 blog-grid-img">
-					<a href="#"><img src="{{ user.profile.profile_image.url }}" class="img-responsive" alt="" /> </a>
-					<div class="profile-usertitle">
-					<div class="profile-usertitle-name">
-						{{ user.get_username }}
-					</div>
-					<div  class="lowercase" class="profile-usertitle-job">
-						{{ user.email }}
-					</div>
-				</div>
-				</div>
-				<div class="col-xs-8 blog-grid-text">
-					<h4>About Me</h4>
-					<h6>About Me</h6>
-					<p>{{user.profile.about_me}} </p>
+			
+               <div class="container">
+    <div class="span3 well">
+        <center>
+        <a href="#aboutModal" data-toggle="modal" data-target="#myModal"><img src="{{ profile.profile_image.url }}"  name="aboutme" width="140" height="140" class="img-circle"></a>
+        <h3>{{ profile.authorName }}</h3>
+        <em>click my face for more ....<a class="facebook" href="https://twitter.com/{{profile.instagram}}">
+									<span class="fa fa-facebook"></span>
+									
+								</a>&nbsp;<a class="facebook" href="https://instagram.com/{{profile.twitter}}">
+									<span class="fa fa-twitter"></span>
+									
+								</a></em>
+		</center>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true"></button>
+                    <h4 class="modal-title" id="myModalLabel">More About {{ profile.authorName }}</h4>
+                    </div>
+                <div class="modal-body">
+                    <center>
+                    <img src="{{ profile.profile_image.url }}" name="aboutme" width="140" height="140" border="0" class="img-circle"></a>
+                    <h3 class="media-heading">{{ profile.authorName }} <small>Nigeria</small></h3>
+                    <span><strong>	Favorite books: </strong></span>
+                    {% for book in favorite %}
 
+                        <a href="{% url 'file' book.id|urlencode %}"> <span class="label label-warning">{{  book.title }}</span></a>
+                        
+                         {% endfor %}
+                    </center>
+                    <hr>
+                    <center>
+                    <p class="text-left"><strong>Bio: </strong><br>
+                        {{profile.about_me}} </p>
+                    <br>
+                    </center>
+                    <a class="facebook" href="https://twitter.com/{{profile.instagram}}">
+									<span class="fa fa-facebook"></span>
+									
+								</a>&nbsp;<a class="facebook" href="https://instagram.com/{{profile.twitter}}">
+									<span class="fa fa-twitter"></span>
+									
+								</a>
+                </div>
 
-						<div class="col-md-5">
-			{% if user.is_authenticated %}
-          
-			   <ul>
-  
-  			Favorite book:
-  				{% for book in user.profile.favorite.all %}
-              <li>   
+                <div class="modal-footer">
+                    <center>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">I've heard enough about {{ profile.authorName }}</button>
+                    	{% if user.profile == profile %}
+                  <button type="button" class="btn btn-default">
 
-              	<a href="{{book.get_absolute_url}}">{{  book.title }}</a><br>
-              </li>  
-  
-               
-				</ul>
-                {% endfor %}
+							<a href="{% url 'edit' %}">Edit Profile </a>
+						</button>
+							{% endif %}
+                    </center>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
            
-            {% endif %}
-            <a class="button-style" href="{% url 'upload' %}">Upload Book</a>
+            <div style="text-align: center;">
+            	<a class="button-style btn-default" href="{% url 'upload' %}">Upload Book</a>
+            </div>
+            
         </div>
 						
 				</div>
-			</div>
-		</div>
-	</div>
-
-				
+		
+		
 				
 				<!-- END SIDEBAR USER TITLE -->
 				<!-- SIDEBAR BUTTONS -->
@@ -103,14 +133,9 @@ p.capitalize {
 			
 				<!-- END SIDEBAR BUTTONS -->
 				<!-- SIDEBAR MENU -->
-				<div class="profile-usermenu">
-				
+			
 
-							
-							<i class="glyphicon glyphicon-flag"></i>
-							<a href="{% url 'edit' %}">EditProfile </a>
-						
-				</div>
+
 				<!-- END MENU -->
 			
 	<script src=" {% static 'js/jquery-2.1.4.min.js' %}"></script>

@@ -18,6 +18,10 @@
 					<a href="{% url 'index' %}">Home</a>
 					<span>| |</span>
 				</li>
+				<li class="breadcrumb-item active">
+		<a href="{% url 'create' %}">i'd rather write</a>
+		<span>| |</span>
+	</li>
 				<li>Upload Book</li>
 			</ul>
 		</div>
@@ -32,7 +36,7 @@
   <h4 class="alert-heading"  style="color: #FEB103;"  > Hello! {{ user.username }}  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
   <span aria-hidden="true" style="color:#FEB103;">&times;</span>
 </button> </h4>
-  <p>So, you just about to submitted your literary piece and want to be a registered author on chowTV, that is awesome, we are happy to have you with us, however as with any proper arrangement that wants to last there are a few guidelines, yes you have to read them, no it won't take long...
+  <p>So, you just about to submit your literary piece and want to be a registered author on chowTV, that is awesome, we are happy to have you with us, however as with any proper arrangement that wants to last there are a few guidelines, yes you have to read them, no it won't take long...
   	 <hr>
 <p class="mb-0">No 1- Plagiarism is highly discouraged, if any literary piece submitted for review is discovered to have been plagiarised it will be disqualified immediately and if a person attempts to submit plagiarised work more than 3 times it would lead to a ban of that person's email from the site </p>
  <hr>
@@ -62,6 +66,11 @@
 
 
 				<div class="tittle-style">
+					<br>
+					<br>
+					<br>
+
+					<strong>  <a href="{% url 'create' %}"> <h4 class="text-center"> <i class="fa fa-book"></i> No, I Want to Write a Short Story </h4> </a>   </strong>
 
 				</div>
 			</div>
@@ -87,18 +96,19 @@
 								<br>
 							
 								
-									<div class="col dropdown ">
-							<button class="btn btn-primary dropdown-toggle" type="button" data-toggle='dropdown'>
-					Choose Genre	
-						<span class="caret"></span>							
-
-							</button>
-							<div class="dropdown-menu"> 
+								<div class="form-group">
+Genres
+								<br><br>
+										<div class="col-md-3 control-label"> 
 					{{ book_form.genre }}
 						
 					</div>
 
-							</div>
+									
+								</div>	
+					
+						
+							
 					
 								<br> <br>
 								<label class="header">Summary</label>
@@ -133,7 +143,11 @@ $(".alert").alert('close')
 </script>
 
 
-
+<script type="text/javascript">
+	$(document).ready(function){
+		$('.mdb-select').materialSelect();
+	})
+</script>
 	
 	<!-- js files -->
 	<!-- js -->

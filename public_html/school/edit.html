@@ -6,6 +6,8 @@
 {% load static %}
 {% load crispy_forms_tags %}
 
+
+<br><br>
 <div class="container-fluid">
 
 
@@ -29,13 +31,28 @@
 
       <div class="col-xs-3 blog-grid-img">
           <img src="{{ user.profile.profile_image.url }}" style="" class="img-responsive" alt="" />
-         <div>  {{ profile_form.profile_image  }}  </div> 
-        </div>
+         
+        </div><div>  {{ profile_form.profile_image  }}  </div> 
       <div class="col-lg-5 col-centered">
         
         
           <label class="header">About Me</label>
           {{ profile_form.about_me }}
+<br>
+        
+        <label >instagram</label><br>
+
+
+        {{ profile_form.instagram }}
+
+<br>
+<label >twitter</label><br>
+
+
+        {{ profile_form.twitter }}
+
+
+
 <br>
           <div class="clearfix"> 
 <div class="styled-input agile-styled-input-top">
@@ -77,8 +94,8 @@
               <span></span>
               
               <!-- <input type="reset" class="btn btn-default" value="Cancel"> -->
-              <a href="{% url 'profile' %}" class="btn btn-default" value="Cancel">Cancel</a>
-              <!-- <div class="input"><a href="{% url 'profile' %}"></a></div> -->
+              <a href="{% url 'profile' user.profile.id %}" class="btn btn-default" value="Cancel">Cancel</a>
+             
 
 
               <br>
@@ -94,15 +111,15 @@
       </div>
     </div>
 </div>
+</form>
+
+</div>
 
 
 
 
 
-
-
-
-
+</div>
 
   <script src=" {% static 'js/jquery-2.1.4.min.js' %}"></script>
   <!-- bootstrap -->

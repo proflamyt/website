@@ -20,7 +20,7 @@ $(document).ready(function(){
 	language['PASCAL'] = "program Hello;\nbegin\n    writeln ('Hello World!')\nend.\n";
 	language['PERL'] = "use strict;\n=comment\n# Read input from stdin and provide input before running code\n# Echo input to output.\nwhile(my $fred = <STDIN>) {\n    print $fred;\n}\n=cut\nprint 'Hello World!'\n";
 	language['PHP'] = '<?php\n\necho "Hello World!";\n\n?>\n';
-	language['PYTHON'] = "print 'Hello World!'\n";
+	language['PYTHON'] = "print ('Hello World!')\n";
 	language['RUBY'] = "print 'Hello World!'\n";
 	language['R'] = 'cat("Hello World")\n';
 	language['RUST'] ='fn main() {\n    println!("Hello World!");\n}\n';
@@ -104,7 +104,7 @@ $(document).ready(function(){
 
 		// AJAX request to Django for running code
 		$.ajax({
-			url: "run/",
+			url: "/run/",
 			type: "POST",
 			data: run_data,
 			dataType: "json",

@@ -157,7 +157,7 @@ unending pursuit of educational development and skills pursuit.</p>
 				<div class="col-xs-4 services-grids-w3l">
 					<div class="servi-shadow">
 						<span class="fa fa-book icon" aria-hidden="true"></span>
-						<h4><a href="{% url 'download' %}"> Novel </a> </h4>
+						<h4><a href=""> Novel </a> </h4>
 						<p>Check Out The Novels From Our Best Authors</p>
 					</div>
 				</div>
@@ -195,7 +195,7 @@ unending pursuit of educational development and skills pursuit.</p>
 		<div class="container">
 			<div class="title-div">
 				<h3 class="tittle">
-					<span>O</span>ur
+					<span>O</span>ur &nbsp;
 					<span> E</span>vents
 				</h3>
 				<div class="tittle-style">
@@ -357,7 +357,7 @@ unending pursuit of educational development and skills pursuit.</p>
 				</li>
 			</ul>
 			<a class="button-style" href="{% url 'join_course' %}">Join Course</a>
-			<a class="button-style" href="{% url 'upload' %}">Upload Novel</a>
+			<a class="button-style" href="">Upload Novel</a>
 		</div>
 		<div class="pencil-img">
 			<img src="static/images/bg5.png" alt="" />
@@ -369,8 +369,8 @@ unending pursuit of educational development and skills pursuit.</p>
 		<div class="container">
 			<div class="title-div">
 				<h3 class="tittle">
-					<span>O</span>ur
-					<span>A</span>uthors
+					<span>O</span>ur &nbsp;
+					<span> T</span>utors
 					
 				</h3>
 				<div class="tittle-style">
@@ -389,7 +389,7 @@ unending pursuit of educational development and skills pursuit.</p>
 						</div>
 						<div class="col-xs-9 three_testimonials_grid">
 							<div class="three_testimonials_grid1">
-								<h5> &nbsp; &nbsp; Author: {{ author.authorName|title }}</h5>
+								<h5> &nbsp; &nbsp; <a href="{% url 'profile' author.id %}" class="btn btn-default"> Author: {{ author.authorName|title }} </a></h5>
 								  <p>&nbsp;Favorite Books: </p>
 								  <br>
 							  	{% for i in author.favorite.values %} 

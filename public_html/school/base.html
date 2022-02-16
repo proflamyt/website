@@ -15,6 +15,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<link href="//fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
 	    rel="stylesheet">
 	<link href="//fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i,800,800i" rel="stylesheet">
+	<link rel="shortcut icon" href="{% static 'fonts/fontawesome-webfont.eot' %}">
 	<script>
 		addEventListener("load", function () {
 			setTimeout(hideURLbar, 0);
@@ -88,7 +89,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									<ul class="dropdown-menu" role="menu">
 										  {% if user.is_authenticated %}
 										<li>
-											<a href="{% url 'index' %}">{{ user.get_username }}</a>
+											<a href="{% url 'user_profile' %}">{{ user.get_username }}</a>
 										</li>
 										<li>
 											<a href="{% url 'logout' %}"><span class="fa fa-sign-out" aria-hidden="true"></span>Logout</a>
@@ -151,18 +152,19 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<li>
 									<a href="{% url 'courses' %}" class="effect-3">Courses</a>
 								</li>
-								{% if not user.course_name %}
+								{% if user.course_name %}
 								<li>
-									<a href="{% url 'join_course' %}" class="effect-3">Join Us</a>
+									<a href="{% url 'join_course' %}" class="effect-3">Edit Course Form </a>
 								</li>
 								{% else %}
 								<li >
-									<a href="{% url 'join_course' %}" class="effect-3">Edit Course Info </a>
+									<a href="{% url 'join_course' %}" class="effect-3">Join Us</a>
+									
 								</li>
 								{% endif %}
 
 								<li >
-									<a class="effect-3" href="{% url 'download' %}" >Novels</a>
+									<a class="effect-3" href="" >Novels</a>
 
 								<li>
 									<a href="{% url 'gallary' %}" class="effect-3">Gallery</a>
@@ -186,7 +188,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 
 
-	
+	<body>
 
 	{% block body %}
 	

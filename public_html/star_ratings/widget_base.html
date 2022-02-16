@@ -1,6 +1,17 @@
 {% load i18n %}
 {% block rating_style %}
-<style>
+{% load static %}
+<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<meta name="keywords" content="Soft Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+    <link href="{% static 'css/bootstrap.css' %}" rel="stylesheet" type="text/css" media="all" />
+	
+	<!-- font-awesome -->
+	
+	<!-- fonts -->
+
+        <style type="text/css" >
     #{{ id }} .star-ratings-rating-full, #{{ id }} .star-ratings-rating-empty {
         width: {{ icon_width }}px;
         height: {{ icon_height }}px;
@@ -18,6 +29,10 @@
     }
     {% endif %}
 </style>
+        
+
+	
+
 {% endblock rating_style %}
 
 {% block rating_container %}

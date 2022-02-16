@@ -8,20 +8,24 @@
 <h3 class="tittle">
 					<span>C</span>reate 
 					<span>C</span>ourse <span>N</span>ame 
-				</h3>
+				</h3><br><br>
+<div class="register-form">
+
 <form action="{% url 'tutname' %}" method="post">
 
 {% csrf_token %}
 
 {{ name |crispy }}
 
-<input type="submit" value="Submit">
+<div class="text-center">
+<input type="submit" class="btn btn-primary " value="Submit">
+</div>
 
 
+</form> 
+ <a href="{% url 'tut' %}">  <button>To course page</button> </a>
 
-</form>
-
-
+</div>
 
 <br>
 <br>
@@ -31,5 +35,34 @@
 <br>
 <br>
 <br>
+<script src="static/js/jquery-2.1.4.min.js"></script>
+	<!-- bootstrap -->
+	<script src="static/js/bootstrap.js"></script>
+	<!-- stats numscroller-js-file -->
+	<script src="static/js/numscroller-1.0.js"></script>
+	<!-- //stats numscroller-js-file -->
+	<!-- smooth scrolling -->
+	<script src="static/js/SmoothScroll.min.js"></script>
+	<script src="static/js/move-top.js"></script>
+	<script src="static/js/easing.js"></script>
+	<!-- here stars scrolling icon -->
+	<script>
+		$(document).ready(function () {
+			/*
+				var defaults = {
+				containerID: 'toTop', // fading element id
+				containerHoverID: 'toTopHover', // fading element hover id
+				scrollSpeed: 1200,
+				easingType: 'linear' 
+				};
+			*/
+
+			$().UItoTop({
+				easingType: 'easeOutQuart'
+			});
+
+		});
+	</script>
+	<!-- //here ends scrolling icon -->
 
 {% endblock%}

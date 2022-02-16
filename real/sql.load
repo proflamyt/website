@@ -1,6 +1,6 @@
 load database
      from 'db.sqlite3'
-     into postgresql:ola
+     into postgresql:///olamide
 
  with include drop, create tables, create indexes, reset sequences
 
