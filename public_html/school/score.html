@@ -1,0 +1,35 @@
+{% extends "school/baseok.html" %}
+{% block body %}
+
+
+<section class="main-content-w3layouts-agileits">
+<div class="container">
+
+<div class="text-center">
+
+<h4> <b>YOU SCORED {{ score }} %</b> </h4>
+
+
+<br><br><br><br><br>
+
+
+<h6> Return To Course </h6>
+<br>
+<button class="btn btn-outline-info padding" type="button">
+						<a href="{% url 'join' topic %}"> Next </a>
+															</button> 
+
+
+
+
+
+
+
+<br>
+<br><br><br><br><br><br><br><br><br><br>
+
+</div>
+</div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,94 @@
+{% extends "school/baseprod.html" %}
+
+{% block body %}
+{% load range %}
+      <!-- Breadcrumbs -->
+      <section class="bg-gray-7">
+        <div class="breadcrumbs-custom bg-image" style="background-image: url(static/images/1.jpg);">
+          <div class="container">
+            
+            <div class="breadcrumbs-custom-decor"></div>
+          </div>
+        </div>
+        <div class="container">
+          <ul class="breadcrumbs-custom-path">
+            <li><a href="{% url 'index' %}">Home</a></li>
+            
+            <li class="active">Courses</li>
+          </ul>
+        </div>
+      </section>
+      <!-- Grid Blog-->
+      <section class="section section-lg bg-default">
+        <div class="container">
+
+
+          <div class="row row-40 row-lg-60 justify-content-center">
+
+
+          
+         {% for courses in course %}
+
+
+            <div class="col-sm-6 col-lg-4 order-md-4 order-lg-1">
+              <!-- Post Classic-->
+              <article class="post post-classic">
+                <div class="post-classic-figure"><img src="{{ courses.image.url }}" alt="" style="width: 370px; height:210px;" />
+                </div>
+
+                <div class="post-classic-content">
+                 <b> <p class="post-classic-title"><a href="{% url 'join' courses.id %}"> {% if user|has_object:courses.id %}
+
+
+          Continue To {{ courses.name }}
+            {% else %}
+          
+Apply Now 
+
+{% endif %}</a>
+                  </p></b>
+                </div>
+
+          <p style="text-align: center;">
+            {{ courses.description|safe | truncatewords:10 }}
+          </p>
+
+                  {% if course.0.premium == False %}
+                <h6 class="post-classic-time">Free</h6>
+                {% else %}
+                <h6 class="post-classic-time">Premium </h6>
+
+                {% endif %}
+               <!--  <time class="post-classic-time" datetime="2018-06-06">June 06, 2018</time> -->
+              </article>
+            </div>
+
+
+
+{% endfor %}
+      
+
+          </div>
+<!-- 
+
+          <div class="pagination-wrap">
+             Bootstrap Pagination-->
+            <!-- <nav aria-label="Page navigation"> -->
+      <!--         <ul class="pagination">
+                <li class="page-item page-item-control disabled"><a class="page-link" href="#" aria-label="Previous"><span class="icon" aria-hidden="true"></span></a></li>
+
+                <li class="page-item active"><span class="page-link">1</span></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item page-item-control"><a class="page-link" href="#" aria-label="Next"><span class="icon" aria-hidden="true"></span></a></li>
+              </ul>
+            </nav> -->
+
+<!-- 
+          </div> --> 
+
+        </div>
+      </section>
+
+      <!-- Page Footer-->
+{% endblock %}
