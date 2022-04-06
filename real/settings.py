@@ -247,3 +247,6 @@ CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 RAVE_SANDBOX = True
 API_key = config('API_KEY')
+
+import django_heroku
+django_heroku.settings(locals())
