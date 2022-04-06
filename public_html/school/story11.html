@@ -1,0 +1,496 @@
+<!--
+
+	Author: W3layouts
+	Author URL: http://w3layouts.com
+	License: Creative Commons Attribution 3.0 Unported
+	License URL: http://creativecommons.org/licenses/by/3.0/
+-->
+
+
+<!DOCTYPE html>
+<html lang="zxx">
+{% load static %}
+{% load ratings %}
+<head>
+	<title>Books</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta charset="utf-8">
+	<meta name="keywords" content="Weblog a Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
+Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
+
+	<script>
+		addEventListener("load", function () {
+			setTimeout(hideURLbar, 0);
+		}, false);
+
+		function hideURLbar() {
+			window.scrollTo(0, 1);
+		}
+	</script>
+	<link href=" {% static 'ok/css/bootstrap.css' %}"rel='stylesheet' type='text/css' />
+	<link rel="stylesheet" href=" {% static 'ok/css/single.css'%}">
+	<link href=" {% static 'ok/css/style.css'%}" rel='stylesheet' type='text/css' />
+	<link href=" {% static '/ok/css/fontawesome-all.css'%}" rel="stylesheet">
+	<link href="//fonts.googleapis.com/css?family=Poppins:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800"
+	    rel="stylesheet">
+	    <link rel="stylesheet" href="{% static 'star-ratings/css/star-ratings.css' %}">
+<script type="text/javascript" src="{% static 'star-ratings/js/dist/star-ratings.min.js' %}"></script>
+
+
+<script type="text/javascript" src="https://platform-api.sharethis.com/js/sharethis.js#property=5f20848dc8bb2900121bf68a&product=inline-share-buttons" async="async"></script>
+
+<style type="text/css">
+	body {
+    background-color: #F3E5F5,
+
+}
+
+
+
+
+
+
+</style>
+
+
+</head>
+
+	<!--Header-->
+
+
+	<!--//header-->
+<body>
+	<!--Header-->
+
+	<header>
+		<div class="top-bar_sub_w3layouts container-fluid">
+			<div class="row">
+				<div class="col-md-4 logo text-left">
+					<a class="navbar-brand" href="{% url 'index' %}">
+						<i class="fa fa-book"></i> cHowTV</a>
+				</div>
+				<div class="col-md-4 top-forms text-center mt-lg-3 mt-md-1 mt-0">
+					<span>Welcome {{user.username}}</span>
+					<span class="mx-lg-4 mx-md-2  mx-1">
+						{% if user.profile %}
+						<a href="{% url 'profile' user.profile.id %}">
+							<i class="fas fa-user"></i> View Your Profile</a>
+
+						{% else %}
+						<a href="{% url 'author' %}">
+							<i class="fas fa-user"></i> Become an Author</a>
+						
+						{% endif %}
+					</span>
+					
+				</div>
+				<div class="col-md-4 log-icons text-right">
+
+					<ul class="social_list1 mt-3">
+
+						<li>
+							<a href="https://facebook.com/cHowTv1" class="facebook1 mx-2">
+								<i class="fab fa-facebook-f"></i>
+
+							</a>
+						</li>
+						<li>
+							<a href="https://twitter.com/cHowTv1" class="twitter2">
+								<i class="fab fa-twitter"></i>
+
+							</a>
+						</li>
+						<li>
+							<a href="https://instagram.com/how_tv" class="dribble3 mx-2">
+								<i class="fab fa-instagram"></i>
+							</a>
+						</li>
+						<li>
+							<a href="https://wa.me/+2348025729256" class="pin">
+								<i class="fab fa-whatsapp"></i>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="header_top" id="home">
+			<nav class="navbar navbar-expand-lg navbar-light bg-light  navbar-fixed-top">
+				<button class="navbar-toggler navbar-toggler-right mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon"></span>
+				</button>
+
+
+				<div class="collapse navbar-collapse" id="navbarSupportedContent">
+					<ul class="navbar-nav mr-auto">
+						<li class="nav-item ">
+								<a class="nav-link" href="{% url 'index' %}">Home
+								<span class="sr-only">(current)</span>
+							</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" href="{% url 'about' %}">About</a>
+						</li>
+				<li class="nav-item dropdown">
+							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+							    aria-expanded="false">
+								Account
+							</a>
+							<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+
+								{% if user.is_authenticated %}
+
+								<a class="dropdown-item" href="{% url 'pay' %}"><span> <i class="fas fa-lock"></i> </span>{{ user.get_username }}</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'logout' %}">Logout</a>
+			
+								{% else %}
+								<a class="dropdown-item" href="{% url 'login' %}"><span> <i class="fas fa-lock"></i> </span>Login</a>
+								<div class="dropdown-divider"></div>
+								<a class="dropdown-item" href="{% url 'register' %}"><span> <i class="far fa-user"></i> </span> Register</a>
+								{% endif %}
+							</div>
+						</li>
+						
+					</ul>
+
+					<form action="{% url 'download' %}" method="post" class="form-inline my-2 my-lg-0 header-search">
+						{% csrf_token %}
+						<input class="form-control mr-sm-2" type="search" placeholder="Search here..." name="Search" required="">
+						<button class="btn btn1 my-2 my-sm-0" type="submit">
+							<i class="fas fa-search"></i>
+						</button>
+					</form>
+
+
+
+				</div>
+			</nav>
+
+		</div>
+	</header>
+	<!--//header-->
+	<div class="banner-inner">
+	</div>
+	<ol class="breadcrumb">
+		<li class="breadcrumb-item">
+			<a href="{% url 'index' %}">Home</a>
+		</li>
+		<li class="breadcrumb-item active">Read Book</li>
+		{% if user.profile == story.author %}
+		<li class="breadcrumb-item"> 
+
+			<a href="{% url 'editnovella' story.id %}"> Edit Story</a>
+</li>
+		{% endif %}
+	</ol>
+
+	<!--//banner--><h3 class="tittle">
+							{{ story.title |title }}
+						</h3>
+	<section class="banner-bottom">
+		<!--/blog-->
+		<div class="container">
+
+						<img src='{{ story.author.profile_image.url }}' style="border-radius: 50%; height: 50px; width: 50px; object-fit: cover; " 
+		class="img-fluid img-circle img-profile" alt="author">&nbsp;&nbsp;&nbsp;&nbsp;<a href="{% url 'profile' story.author.id %}" style="color: blue">{{story.author.authorName | title }} </a> &nbsp;&nbsp;&nbsp;&nbsp; {% if user.profile == story.author %}
+
+			<a href="{% url 'editnovella' story.id %}">Edit</a>
+
+		{% endif %}<br>
+		
+
+<br><br><br>
+
+						
+			<div class="row">
+				<!--left-->
+				<div class="col-lg-8 lheft-blog-info-w3layouts-agileits text-left">
+					<div class="blog-grid-top" >
+						<div class="b-grid-top">
+							<div class="blog_info_left_grid">
+								
+									<img src='{{ story.bookImage.url }}'  style="width: 900px; height: 500px;" class="img-fluid" alt="">
+								
+							</div>
+								
+
+						</div>
+
+					
+							
+						
+							{{ story.story | safe }}
+						
+
+
+							
+						<div class="sharethis-inline-share-buttons"></div>
+
+						
+						
+					</div >
+
+<br>
+	Rate This Book  : {% ratings story %}	
+						
+
+
+				
+			
+				</div>
+
+				<!--//left-->
+
+				<!--right-->
+				<aside class="col-lg-4 agileits-w3ls-right-blog-con text-right">
+					<div class="right-blog-info text-left">
+						
+
+
+						
+							
+						<div class="tech-btm">
+							{% for favourite in story.author.favorite.values %}
+							<h4>{{ favourite.title }}</h4>
+
+							
+							
+							<div class="blog-grids row mb-3 text-left">
+								<div class="col-md-5 blog-grid-left">
+									<a href="single.html">
+										<img src="{{ fovourite.bookImage }}" class="img-fluid" alt="">
+									</a>
+								</div>
+								<div class="col-md-7 blog-grid-right">
+									<h5>
+										<a href="single.html">{{ favourite.summary | safe | truncatewords:10 }} </a>
+									</h5>
+									<div class="sub-meta">
+										<span>
+											<i class="far fa-clock"></i> {{ favourite.date_uploaded }}</span>
+									</div>
+								</div>
+
+							</div>{% endfor %}
+						</div>
+						{% if genre %}
+				
+						<div class="tech-btm">
+							 
+							<h4>Genres</h4>
+							
+							<ul class="list-group single">
+								 
+								 {% for genres in genre %}
+									<li class="list-group-item d-flex justify-content-between align-items-center">
+									 <a href="{% url 'genre' genres.id %}"> {{ genres }} </a>
+									  <span class="badge badge-primary badge-pill">{{genres.novel_set.count }} Novels </span><span class="badge badge-primary badge-pill">{{genres.novella_set.count}} Stories</span>
+									</li>
+									
+									{% endfor %}
+									
+								  </ul>
+						</div>{% endif %}
+
+
+						
+							
+
+
+
+					
+
+						</div>
+					</div>
+
+				</aside>
+				<!--//right-->
+			</div>
+		</div>
+	</section>
+	<!--//main-->
+
+	<!--footer-->
+	<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+					<h3>About US</h3>
+					<p>We offer you the opportunity to tap from this reforming resource from modern tech innovators in
+creating facilitating and engaging educational experiences yet to be explored from the four walls
+of the classroom....</p>
+					<div class="read">
+						<a href="{% url 'about'  %}" class="btn btn-primary read-m">Read More</a>
+					</div>
+				</div>
+				<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+
+					<div class="tech-btm">
+						<h3>Latest Posts</h3>
+						<div class="blog-grids row mb-3">
+							<div class="col-md-5 blog-grid-left">
+								<a href="{% url 'about'  %}">
+									<img src="{% static 'images/1.jpg' %}" class="img-fluid" alt="">
+								</a>
+							</div>
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index'  %}">Hello {{ user.get_username }} </a>
+								</h5>
+								
+							</div>
+
+						</div>
+						<div class="blog-grids row mb-3">
+							<div class="col-md-5 blog-grid-left">
+								<a href="{% url 'index'%}">
+									<img src="{% static 'images/4.jpg' %}" class="img-fluid" alt="">
+								</a>
+							</div>
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index' %}"> Checked out our courses yet ? {{ user.username }} </a>
+								</h5>
+								<div class="sub-meta">
+									<span>
+									
+								</div>
+							</div>
+
+						</div>
+						<div class="blog-grids row mb-3">
+							<div class="col-md-5 blog-grid-left">
+								<a href="{% url 'index'  %}">
+									<img src="{% static 'images/2.jpg' %}" class="img-fluid" alt="">
+								</a>
+							</div>
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index'  %}"> We At cHowTV ......</a>
+								</h5>
+								<div class="sub-meta">
+									<span>
+										
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+				<!-- subscribe -->
+								<div class="col-lg-4 subscribe-main footer-grid-agileits-w3ls text-left">
+					<h2>Signup to our newsletter</h2>
+					<div class="subscribe-main text-left">
+						<div class="subscribe-form">
+							<form enctype="multipart/form-data" action="/newsletter/{{ story.author.user.username }}/subscribe/" method="post" class="subscribe_form">
+								{% csrf_token %}
+								<input for="id_email_field" class="form-control" type="email" placeholder="Enter your email... " required=""  name="email_field" id="id_email_field">
+								<button id="id_submit" value="Subscribe"  type="submit" class="btn btn-primary submit">Subscribe</button>
+							</form>
+							<div class="clearfix"> </div>
+						</div>
+						<p>Get Novels and Story updates!</p>
+					</div>
+</div>
+
+				
+			</div>
+			<!-- footer -->
+			<div class="footer-cpy text-center">
+				<div class="footer-social">
+					<div class="copyrighttop">
+						<ul>
+							<li class="mx-3">
+								<a class="facebook" href="https://facebook.com/cHowTv1">
+									<i class="fab fa-facebook-f"></i>
+									<span>Facebook</span>
+								</a>
+							</li>
+							<li>
+								<a class="facebook" href="https://twitter.com/cHowTv1">
+									<i class="fab fa-twitter"></i>
+									<span>Twitter</span>
+								</a>
+							</li>
+							<li class="mx-3">
+								<a class="facebook" href="https://instagram.com/how_tv">
+									<i class="fab fa-instagram"></i>
+									<span>Instagram</span>
+								</a>
+							</li>
+							<li>
+								<a class="facebook" href="https://wa.me/+2348025729256">
+									<i class="fab fa-whatsapp"></i>
+									<span>WhatsApp</span>
+								</a>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+
+			</div>
+
+			<!-- //footer -->
+
+
+		</div>
+	</footer>
+
+	
+	<!---->
+	<!-- js -->
+	<script src=" {% static 'ok/js/jquery-2.2.3.min.js' %} "></script>
+	<!-- //js -->
+	<!--/ start-smoth-scrolling -->
+	<script src=" {% static 'ok/js/move-top.js' %}  "></script>
+	<script src=" {% static 'ok/js/easing.js' %} "></script>
+	<script>
+		jQuery(document).ready(function ($) {
+			$(".scroll").click(function (event) {
+				event.preventDefault();
+				$('html,body').animate({
+					scrollTop: $(this.hash).offset().top
+				}, 900);
+			});
+		});
+	</script>
+	<!--// end-smoth-scrolling -->
+	
+
+	<script>
+		$(document).ready(function () {
+			/*
+									var defaults = {
+							  			containerID: 'toTop', // fading element id
+										containerHoverID: 'toTopHover', // fading element hover id
+										scrollSpeed: 1200,
+										easingType: 'linear' 
+							 		};
+									*/
+
+			$().UItoTop({
+				easingType: 'easeOutQuart'
+			});
+
+		});
+	</script>
+	<a href="#home" class="scroll" id="toTop" style="display: block;">
+		<span id="toTopHover" style="opacity: 1;"> </span>
+	</a>
+
+	<!-- //Custom-JavaScript-File-Links -->
+	<script src=" {% static 'ok/js/bootstrap.js' %}"></script>
+
+
+</body>
+
+</html>
+
+

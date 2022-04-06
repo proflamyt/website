@@ -1,0 +1,203 @@
+{% extends "school/base.html" %}
+
+
+	{% block body %}
+	{% load static %}
+	
+	<div class="inner_page_agile">
+
+	</div>
+	<!--//banner -->
+	<!-- short-->
+	<div class="services-breadcrumb">
+		<div class="inner_breadcrumb">
+			<ul class="short_ls">
+				<li>
+					<a href="{% url 'index' %}">Home</a>
+					<span>| |</span>
+				</li>
+				<li>Courses</li>
+			</ul>
+		</div>
+	</div>
+	<!-- //short-->
+	<!-- blog -->
+	<div class="blog-cource">
+		<div class="container">
+			<div class="title-div">
+				<h3 class="tittle">
+					<span>P</span>opular
+					<span>C</span>ourses
+				</h3>
+				<div class="tittle-style">
+
+				</div>
+			</div>
+			<div class="blog-info">
+
+				{% if course.0 %}
+				<div class="col-xs-4 blog-grid-img">
+					<img src="{% static 'images/c2.jpg' %}" class="img-responsive" alt="" />
+				</div>
+				<div class="col-xs-8 blog-grid-text">
+					<h4>{{ course.0.category }}</h4>
+					{% if course.0.premium == False %}
+								<h6 class="card-text mb-3">Free</h6>
+								{% else %}
+								<h6 class="card-text mb-3">Premium </h6>
+
+								{% endif %}
+					<p>
+						{{ course.0.description|safe | truncatewords:10 }}
+					</p>
+					<a class="button-style" href="{% url 'join' course.0.course_description_set.first.id %}">{% if user.course_name %}
+
+
+					Continue To {{ course.0.category}}
+						{% else %}
+					
+Apply Now 
+
+{% endif %}</a>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+{% endif %}
+
+
+{% if course.1 %}
+
+			<div class="blog-agileinfo blog-info-mdl">
+				<div class="col-xs-8 blog-grid-text">
+					<h4>{{ course.1.category }}</h4>
+					{% if course.1.premium == False %}
+								<h6 class="card-text mb-3">Free</h6>
+								{% else %}
+								<h6 class="card-text mb-3">Premium </h6>
+
+								{% endif %}
+					<p>
+						{{ course.1.description|safe | truncatewords:10 }}
+					</p>
+						
+					<a class="button-style" href="{% url 'join' course.1.course_description_set.first.id %}">
+					{% if user.course_name %}
+
+
+					Continue To {{ course.1.category}}
+						{% else %}
+					
+Apply Now 
+
+{% endif %}</a>
+
+					
+
+
+				</div>
+				<div class="col-xs-4 blog-grid-img blog-img-rght">
+					<img src="{% static 'images/c1.jpg' %}" class="img-responsive" alt="" />
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+
+
+
+
+
+
+{% endif %}
+
+{% if course.2 %}
+
+	<div class="blog-info">
+				<div class="col-xs-4 blog-grid-img">
+					<img src="{% static 'images/c3.jpg' %}" class="img-responsive" alt="" />
+				</div>
+				<div class="col-xs-8 blog-grid-text">
+					<h4>{{ course.2.category }}</h4>
+					{% if course.2.premium == False %}
+								<h6 class="card-text mb-3">Free</h6>
+								{% else %}
+								<h6 class="card-text mb-3">Premium </h6>
+
+								{% endif %}
+					<p>
+						{{ course.2.description|safe | truncatewords:10 }}
+					</p>
+					<a class="button-style" href="{% url 'join' course.2.course_description_set.first.id %}">{% if user.course_name %}
+
+
+					Continue To {{ course.2.category}}
+						{% else %}
+					
+Apply Now 
+
+{% endif %}</a>
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+
+
+
+{% endif %}
+
+{% if course.3 %}
+
+		<div class="blog-agileinfo blog-info-mdl">
+				<div class="col-xs-8 blog-grid-text">
+					<h4>{{ course.3.category }}</h4>
+						{% if course.3.premium == False %}
+								<h6 class="card-text mb-3">Free</h6>
+								{% else %}
+								<h6 class="card-text mb-3">Premium </h6>
+
+								{% endif %}
+					<p>
+						{{ course.3.description|safe | truncatewords:10 }}
+					</p>
+					<a class="button-style" href="{% url 'join' course.3.course_description_set.first.id %}">{% if user.course_name %}
+
+
+					Continue To {{ course.3.category}}
+						{% else %}
+					
+Apply Now 
+
+{% endif %}</a>
+				</div>
+				<div class="col-xs-4 blog-grid-img blog-img-rght">
+					<img src="{% static 'images/c7.jpg' %}" class="img-responsive" alt="" />
+				</div>
+				<div class="clearfix"> </div>
+			</div>
+
+
+{% endif %}
+
+
+			</div>
+		</div>
+	</div>
+	<!-- //blog --/>
+
+	
+
+	<!-- js files -->
+	<!-- js -->
+	<script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
+	<!-- bootstrap -->
+	<script src="{% static 'js/bootstrap.js' %}"></script>
+	<!-- stats numscroller-js-file -->
+	<script src="{% static 'js/numscroller-1.0.js' %}"></script>
+	<!-- //stats numscroller-js-file -->
+	<!-- smooth scrolling -->
+	<script src="{% static 'js/SmoothScroll.min.js' %}"></script>
+	<script src="{% static 'js/move-top.js' %}"></script>
+	<script src="{% static 'js/easing.js' %}"></script>
+	<!-- here stars scrolling icon -->
+	
+	<!-- //here ends scrolling icon -->
+	<!-- smooth scrolling -->
+	<!-- //js-files -->
+	{% endblock %}
