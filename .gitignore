@@ -1,7 +1,7 @@
-*.jpg
+ola.json
 wt_prod-19015/*
 *.jpeg
-book/
+book/*
 *.pdf
 db.sqlite3
 static/

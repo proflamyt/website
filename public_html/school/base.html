@@ -152,19 +152,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 								<li>
 									<a href="{% url 'courses' %}" class="effect-3">Courses</a>
 								</li>
-								{% if user.course_name %}
-								<li>
-									<a href="{% url 'join_course' %}" class="effect-3">Edit Course Form </a>
-								</li>
-								{% else %}
-								<li >
-									<a href="{% url 'join_course' %}" class="effect-3">Join Us</a>
-									
-								</li>
-								{% endif %}
-
-								<li >
-									<a class="effect-3" href="" >Novels</a>
+								
 
 								<li>
 									<a href="{% url 'gallary' %}" class="effect-3">Gallery</a>
@@ -231,9 +219,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<li>
 							<a href="{% url 'courses' %}">Courses</a>
 						</li>
-						<li>
-							<a href="{% url 'join_course' %}">Join Us</a>
-						</li>
+						
 						<li>
 							<a href="{% url 'contact' %}">Contact Us</a>
 						</li>

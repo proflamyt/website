@@ -126,8 +126,8 @@ class ProfileForm(ModelForm):
 class TutCourse(ModelForm):
 
     class Meta:
-        model = Select_course
-        fields = ['sel']
+        model = Topics
+        fields = ['title']
 
 
 

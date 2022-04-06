@@ -1,6 +1,7 @@
 {% extends "school/baseprod.html" %}
 
 {% block body %}
+{% load range %}
       <!-- Breadcrumbs -->
       <section class="bg-gray-7">
         <div class="breadcrumbs-custom bg-image" style="background-image: url(static/images/1.jpg);">
@@ -26,7 +27,7 @@
 
 
           
-         {% for courses in course%}
+         {% for courses in course %}
 
 
             <div class="col-sm-6 col-lg-4 order-md-4 order-lg-1">
@@ -36,10 +37,10 @@
                 </div>
 
                 <div class="post-classic-content">
-                 <b> <p class="post-classic-title"><a href="{% url 'join' courses.course_description_set.first.id %}">{% if user.course_name %}
+                 <b> <p class="post-classic-title"><a href="{% url 'join' courses.id %}"> {% if user|has_object:courses.id %}
 
 
-          Continue To {{ courses.category }}
+          Continue To {{ courses.name }}
             {% else %}
           
 Apply Now 

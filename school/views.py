@@ -29,7 +29,7 @@ rave = Rave(config('RAVE_SANDBOX_PUBLIC_KEY'), config('RAVE_SANDBOX_SECRET_KEY')
 
 
 def home(request):
-    authors  =  Profile.objects.all()
+    authors  =  Tutor.objects.all()
   
     context = {
         'authors':authors
@@ -38,7 +38,7 @@ def home(request):
 
 
 def prem(request):
-    authors  =  Profile.objects.all()
+    authors  =  Tutor.objects.all()
     message = 'Subscribe As Premium User To Access'
   
     context = {
@@ -68,12 +68,14 @@ def index(request,error=None):
         'error':error
     }
     return render(request, "school/index.html",context)
+
+
 def contact(request):
 
     return render(request, "school/contact.html")
 
 def courses(request):
-    course = Course_category.objects.all()
+    course = Course_Description.objects.all()
 
     context = {
        
@@ -152,7 +154,6 @@ def register(request):
             username = form.cleaned_data.get('username')
             raw_password = form.cleaned_data.get('password1')
             user = authenticate(username=username, password=raw_password)
-            
             login(request, user)
             authors  =  Profile.objects.all()
   
@@ -190,9 +191,12 @@ def update_pic(request):
 
     
             
-
+# Add course to user's registered courses
 @login_required(login_url='login')
 def join(request,course_page):
+    course = get_object_or_404(Course_Description, course_page)
+    request.user.registered_courses.add(course)
+    request.user.save()
     try:
         subscriped  = Course.objects.get(Email= request.user)
     except Course.DoesNotExist:
@@ -588,36 +592,7 @@ def profile(request):
     return render(request, 'school/user.html',context)
 
 
-def details(request, book, story):
-    if story == 'story':
-        story = get_object_or_404(Novella, id=book)
-        writer =  story.author
-        similar_books =  Novella.objects.filter(author=writer)
-        context={
-            'book':story,
-            'story': 1,
-            'related':similar_books
-        }
-        return render(request, 'school/book-details.html', context)
-    else :
-        novel = get_object_or_404(Novel , id= book)
-        writer =  novel.author
-        similar_books =  Novel.objects.filter(author=writer)
-        context={
-            'book':novel,
-            'related':similar_books
-        }
-        return render(request, 'school/book-details.html', context)
-
-
     
-
-
-   
-
-        
-    
-
 
 
 

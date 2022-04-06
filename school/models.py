@@ -62,11 +62,11 @@ class User(AbstractUser):
     subscribed = models.BooleanField(default=False)
     is_tutor = models.BooleanField(default=False)
     Phone = PhoneNumberField('INTERNATIONAL')
-    registered_courses = models.ManyToManyField('Course_Description' )
+    registered_courses = models.ManyToManyField('Course_Description')
     gender = models.CharField(max_length=2, choices=Gender)
 
     def __str__(self) -> str:
-        return f"{self.get_full_name}"
+        return f"{self.username}"
 
 
 
@@ -105,48 +105,43 @@ class Profile(models.Model):
     
 class Course_Description(models.Model):
     name = models.CharField(max_length=200, unique=True, null=True)
-    course_category  = models.ForeignKey('Course_category',  on_delete=models.SET_NULL, null=True)
-    course_name = models.OneToOneField('Select_course', on_delete= models.CASCADE,blank=True, null=True ,related_name='description')
-    description = RichTextUploadingField()
-    tutor =  models.ForeignKey('Tutor', on_delete=models.SET_NULL, null=True, blank=True)
+    image = models.ImageField(default ='default_profile.jpg', upload_to='courses/images' , validators = [valid_image,valid_image_mimetype,valid_size])
+    description = RichTextField()
+    tutor =  models.ManyToManyField('Tutor')
     ordering = models.IntegerField(unique=True,null=True,blank=True)
     class Meta:
         ordering = ['ordering',]
     def __str__(self):
-        return f"{self.course_name}"
+        return f"{self.name}"
 
     
 
-class Course_category(models.Model):  
-    image = models.ImageField(default ='default_profile.jpg', upload_to='courses/images' , validators = [valid_image,valid_image_mimetype,valid_size])
+
+
+class Topics(models.Model):
+    title = models.CharField(max_length=50)
+    course = models.ForeignKey(Course_Description,related_name='course', on_delete=models.SET_NULL,blank=True, null=True)  
+    texts = RichTextUploadingField()
     premium = models.BooleanField(default=False)
-    def __str__(self):
-        return f"{self.category}"
-
-
-
     
-
-
-class Select_course(models.Model):
-    sel = models.CharField(max_length=200,unique=True, help_text='Write the topics you want to')
-    users = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True, related_name='registered_users')
     def __str__(self):
         """String for representing the Model object."""
-        return f"{self.sel}"
+        return f"{self.title}"
+    
+
 
 
 
 class Tutor(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete= models.CASCADE,blank=True, null=True ,related_name='tutor')
-    image = models.ImageField(default ='default_profile.jpg', upload_to='book/tutors/', validators= [valid_image,valid_image_mimetype,valid_size]) 
-    instagram = models.CharField(max_length=30, null=True)
+    about = RichTextField(null=True)
+    image = models.ImageField(default ='default_profile.jpg', upload_to='courses/images' , validators = [valid_image,valid_image_mimetype,valid_size])
     twitter = models.CharField(max_length=30, null=True)
     github = models.CharField(max_length=30, null=True)
 
     def save(self, *args, **kwargs):
-         if not self.id:
-            self.mage = self.compress(self.image)
+         if not self.id and self.image:
+            self.image = self.compress(self.image)
          super(Tutor, self).save(*args,**kwargs)
     def compress(self, image):
         im = Image.open(image)

@@ -1,3 +1,4 @@
+from xml.dom import registerDOMImplementation
 from django import template
 
 register = template.Library()
@@ -16,3 +17,8 @@ def zip_list(a,b):
 @register.filter(name='per')
 def percentage(a,b):
 	return int(a/b*100)
+
+@register.filter(name='has_object')
+def check(user, object):
+	print(user)
+	return user.registered_courses.filter(id=object).exists()
