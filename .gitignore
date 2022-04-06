@@ -11,4 +11,5 @@ school/static/ok/*
 school/static/ckeditor/*
 school/static/prod/*
 school/static/star-ratings/*
+school/static/assets/*
 *.zip
