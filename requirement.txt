@@ -1,0 +1,7 @@
+django
+django-allauth
+django-crispy-forms
+django-ckeditor
+python-magic
+django-newsletter
+django-phonenumber-field

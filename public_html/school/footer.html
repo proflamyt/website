@@ -1,0 +1,138 @@
+{% load static %}
+
+
+
+<footer>
+		<div class="container">
+			<div class="row">
+				<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+					<h3>About US</h3>
+					<p>We offer you the opportunity to tap from this reforming resource from modern tech innovators in
+creating facilitating and engaging educational experiences yet to be explored from the four walls
+of the classroom....</p>
+					<div class="read">
+						<a href="{% url 'about'  %}" class="btn btn-primary read-m">Read More</a>
+					</div>
+				</div>
+				<div class="col-lg-4 footer-grid-agileits-w3ls text-left">
+
+					<div class="tech-btm">
+						<h3>Latest Posts</h3>
+						<div class="blog-grids row mb-3">
+							<div class="col-md-5 blog-grid-left">
+								<a href="single.html">
+									<img src="{% static 'images/3.jpg' %}" class="img-fluid" alt="">
+								</a>
+							</div>
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index' %}">We are a team of academicians here to help facilitate the sharing and exchange .... </a>
+								</h5>
+								<div class="sub-meta">
+									
+								</div>
+							</div>
+
+						</div>
+						<div class="blog-grids row mb-3">
+							<div class="col-md-5 blog-grid-left">
+								<a href="single.html">
+									<img src="{% static 'images/2.jpg' %}" class="img-fluid" alt="">
+								</a>
+							</div>
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index' %}">We are a team of academicians here to help facilitate the sharing and exchange .... </a>
+								</h5>
+								<div class="sub-meta">
+
+								</div>
+							</div>
+
+						</div>
+						<div class="blog-grids row mb-3">
+							<div class="col-md-5 blog-grid-left">
+								<a href="single.html">
+									<img src="{% static 'images/1.jpg' %}" class="img-fluid" alt="">
+								</a>
+							</div>
+							<div class="col-md-7 blog-grid-right">
+
+								<h5>
+									<a href="{% url 'index' %}">We are a team of academicians here to help facilitate the sharing and exchange .... </a>
+								</h5>
+								<div class="sub-meta">
+									\
+								</div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+
+				<!-- subscribe -->
+				<div class="col-lg-4 subscribe-main footer-grid-agileits-w3ls text-left">
+					<h2>Signup to our newsletter</h2>
+					<div class="subscribe-main text-left">
+						<div class="subscribe-form">
+							<form enctype="multipart/form-data" action="/newsletter/olami/subscribe/" method="post" class="subscribe_form">
+								{% csrf_token %}
+								<input for="id_email_field" class="form-control" type="email" placeholder="Enter your email..." required=""  name="email_field" id="id_email_field">
+								<button id="id_submit" value="Subscribe"  type="submit" class="btn btn-primary submit">Subscribe</button>
+							</form>
+							<div class="clearfix"> </div>
+						</div>
+						<p>We respect your privacy.No spam ever!</p>
+					</div>
+</div>
+
+
+
+
+			</div>
+			<!-- footer -->
+			<div class="footer-cpy text-center">
+				<div class="footer-social">
+					<div class="copyrighttop">
+						<ul>
+							<li class="mx-3">
+								<a class="facebook" href="https://facebook.com/cHowTv1">
+									<i class="fab fa-facebook-f"></i>
+									<span>Facebook</span>
+								</a>
+							</li>
+							<li>
+								<a class="facebook" href="https://twitter.com/cHowTv1">
+									<i class="fab fa-twitter"></i>
+									<span>Twitter</span>
+								</a>
+							</li>
+							<li class="mx-3">
+								<a class="facebook" href="https://instagram.com/how_tv">
+									<i class="fab fa-instagram"></i>
+									<span>Instagram</span>
+								</a>
+							</li>
+							<li>
+								<a class="facebook" href="https://wa.me/+2348025729256">
+									<i class="fab fa-whatsapp"></i>
+									<span>WhatsApp</span>
+								</a>
+							</li>
+						</ul>
+
+					</div>
+				</div>
+
+			</div>
+
+
+			<!-- //footer -->
+
+
+		</div>
+	</footer>
+	<!---->
+	

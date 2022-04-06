@@ -1,0 +1,517 @@
+{% extends "school/baseok.html" %}
+{% block body %}
+
+
+{% load range %}
+
+{% load static %}
+
+	    <style type="text/css">
+	    	.card {
+    padding-top: 20px;
+    margin: 10px 0 20px 0;
+    background-color: rgba(214, 224, 226, 0.2);
+    border-top-width: 0;
+    border-bottom-width: 2px;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    -webkit-box-shadow: none;
+    -moz-box-shadow: none;
+    box-shadow: none;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card .card-heading {
+    padding: 0 20px;
+    margin: 0;
+}
+
+.card .card-heading.simple {
+    font-size: 20px;
+    font-weight: 300;
+    color: #777;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+.card .card-heading.image img {
+    display: inline-block;
+    width: 46px;
+    height: 46px;
+    margin-right: 15px;
+    vertical-align: top;
+    border: 0;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+}
+
+.card .card-heading.image .card-heading-header {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.card .card-heading.image .card-heading-header h3 {
+    margin: 0;
+    font-size: 14px;
+    line-height: 16px;
+    color: #262626;
+}
+
+.card .card-heading.image .card-heading-header span {
+    font-size: 12px;
+    color: #999999;
+}
+
+.card .card-body {
+    padding: 0 20px;
+    margin-top: 20px;
+}
+
+.card .card-media {
+    padding: 0 20px;
+    margin: 0 -14px;
+}
+
+.card .card-media img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.card .card-actions {
+    min-height: 30px;
+    padding: 0 20px 20px 20px;
+    margin: 20px 0 0 0;
+}
+
+.card .card-comments {
+    padding: 20px;
+    margin: 0;
+    background-color: #f8f8f8;
+}
+
+.card .card-comments .comments-collapse-toggle {
+    padding: 0;
+    margin: 0 20px 12px 20px;
+}
+
+.card .card-comments .comments-collapse-toggle a,
+.card .card-comments .comments-collapse-toggle span {
+    padding-right: 5px;
+    overflow: hidden;
+    font-size: 12px;
+    color: #999;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.card-comments .media-heading {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+.card.people {
+    position: relative;
+    display: inline-block;
+    width: 170px;
+    height: 300px;
+    padding-top: 0;
+    margin-left: 20px;
+    overflow: hidden;
+    vertical-align: top;
+}
+
+.card.people:first-child {
+    margin-left: 0;
+}
+
+.card.people .card-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: inline-block;
+    width: 170px;
+    height: 150px;
+    background-color: #ffffff;
+}
+
+.card.people .card-top.green {
+    background-color: #53a93f;
+}
+
+.card.people .card-top.blue {
+    background-color: #427fed;
+}
+
+.card.people .card-info {
+    position: absolute;
+    top: 150px;
+    display: inline-block;
+    width: 100%;
+    height: 101px;
+    overflow: hidden;
+    background: #ffffff;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card.people .card-info .title {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 18px;
+    color: #404040;
+}
+
+.card.people .card-info .desc {
+    display: block;
+    margin: 8px 14px 0 14px;
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 16px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.card.people .card-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 20px;
+    line-height: 29px;
+    text-align: center;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
+
+.card.hovercard {
+    position: relative;
+    padding-top: 0;
+    overflow: hidden;
+    text-align: center;
+    background-color: rgba(214, 224, 226, 0.2);
+}
+
+.card.hovercard .cardheader {
+    background: url("{% static 'images/1.jpg' %}");
+    background-size: cover;
+    height: 135px;
+}
+
+.card.hovercard .avatar {
+    position: relative;
+    top: -50px;
+    margin-bottom: -50px;
+}
+
+.card.hovercard .avatar img {
+    width: 100px;
+    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    border: 5px solid rgba(255,255,255,0.5);
+}
+
+.card.hovercard .info {
+    padding: 4px 8px 10px;
+}
+
+.card.hovercard .info .title {
+    margin-bottom: 4px;
+    font-size: 24px;
+    line-height: 1;
+    color: #262626;
+    vertical-align: middle;
+}
+
+.card.hovercard .info .desc {
+    overflow: hidden;
+    font-size: 12px;
+    line-height: 20px;
+    color: #737373;
+    text-overflow: ellipsis;
+}
+
+.card.hovercard .bottom {
+    padding: 0 20px;
+    margin-bottom: 17px;
+}
+
+	body {
+    background-color: #F3E5F5,
+
+}
+
+
+
+
+
+
+
+.bbtn{ border-radius: 50%; width:32px; height:32px; line-height:18px;  }
+	    </style>
+
+	<!--//header-->
+	<div class="banner-inner" style="color: black;">
+	</div>
+	<ol class="breadcrumb" style="color: black;">
+		<li class="breadcrumb-item">
+			<a href="{% url 'index' %}" style="color: black;">Home</a>
+		</li>
+		<li class="breadcrumb-item " style="color: black;" >{{ name|title }}</li>
+	</ol>
+	
+					{% for i,j in course.count|times|zip:course  %} 
+				
+					{% if j == name %} 
+					
+
+	<div class="progress">
+		<div class="progress-bar progress-bar-striped bg-warning" role="progressbar" style="width: {{ i|per:course.count }}%;" aria-valuemin="0" aria-valuemax="100"><b>{{ i|per:course.count }}%</b></div>
+	</div>
+	{% endif %}
+{% endfor %}
+	
+	
+	<br>
+
+	<!--//banner--> <h3 class="tittle">
+						 {{ name | title }} 
+						</h3>
+
+	<section class="banner-bottom" style="position: all;">
+		<div class="container"> 
+
+		<!--/blog--><img src='{{ coursepage.tutor.image.url }}' style="border-radius: 50%; height: 50px; width: 50px; object-fit: cover; " 
+		class="img-fluid img-circle img-profile" alt="tutor"> &nbsp;&nbsp;&nbsp;&nbsp;{{ coursepage.tutor.user.username }}&nbsp;&nbsp;&nbsp;
+	<a href="https://instagram.com/{{ coursepage.tutor.instagram }}">
+										<i class="fab fa-instagram"></i> </a>&nbsp;<a href="https://instagram.com/{{ coursepage.tutor.github }}">
+											<i class="fab fa-github"></i> </a>&nbsp;<a href="https://twitter.com/{{ coursepage.tutor.twitter}}">
+											<i class="fab fa-twitter"></i> </a>
+
+
+
+
+			<div class="row">
+				<!--left-->
+				<div class="col-lg-8 left-blog-info-w3layouts-agileits text-left">
+					<div class="blog-grid-top">
+						<div class="b-grid-top">
+
+
+{% if image %}<br>
+							<div class="blog_info_left_grid"> 
+
+
+							<div class="card card-body cd-2 " style="display: block; border-radius: 10px; margin-bottom: 15px;padding: 1.25rem;border: 1px solid rgba(0,0,0,.125);">
+								<section>
+									
+									<div class="vertical-align-custom mb-0">
+                         <div><div style="font-size: 18px; opacity: 0.75; font-weight: bold;">{{name|title}} </div>
+							<div style="font-size: 10px; opacity: 0.75; float: right;">Source: YouTube</div>
+									
+	<iframe width="100%" height="450" src="{{ image.url}}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+
+
+
+</section>
+
+</div>
+										
+
+
+
+							</div>
+							{% endif %}
+							
+						</div>
+
+						<br><br>
+						{% if description %}
+
+						
+
+
+						{{ description | safe  }}
+
+						
+
+						{% endif %}
+
+						
+					</div>
+
+					<br><br>
+					<div class="sharethis-inline-share-buttons"></div>
+
+
+<br><br>
+				
+			
+				<br>	
+				<div class="container">
+	<div class="row">
+		<div class="col-lg-12 col-sm-8">
+
+            <div class="card hovercard">
+                <div class="cardheader">
+                	
+                </div>
+                <div class="avatar">
+                    <img alt="" src='{{ coursepage.tutor.image.url }}'>
+                </div>
+                <div class="info">
+                    <div class="title">
+                        {{ coursepage.tutor.user.username }}
+                    </div>
+                    <div class="desc">Tutor</div>
+                    <div class="desc">Developer</div>
+                    <div class="desc">Tech geek</div>
+                </div>
+                <div class="bottom" style="background: #2c363e; ">
+                	<a class="facebook"  href="https://instagram.com/{{ coursepage.tutor.instagram }}">
+									<i class="fab fa-facebook-f"></i>
+					</a>
+						&nbsp;&nbsp;
+                    <a class="facebook" href="https://twitter.com/{{ coursepage.tutor.twitter }}">
+                        <i class="fab fa-twitter"></i>
+                    </a>&nbsp;&nbsp;
+
+                    <a class="facebook" 
+                       href="https://github.com/{{ coursepage.tutor.github }}">
+                        <i class="fab fa-github"></i>
+                    </a>&nbsp;&nbsp;
+                   
+                    
+                    
+                </div>
+            </div>
+
+        </div>
+
+	</div>
+</div>
+			
+					
+				</div>
+
+
+				<!--//left-->
+				<!--right-->
+				<aside class="col-lg-4 agileits-w3ls-right-blog-con text-right">
+					<div class="right-blog-info text-left">
+						
+						{% if course %}					
+<div class="single-gd my-5 tech-btm">
+							<h4><span>N</span>ext</h4>
+							
+
+
+					{% for olamide in course %}
+
+					
+					<div class="list-group">
+						
+  <a href="{% url 'join'  course_page=olamide.id %}" style="color: #007bff;" class="list-group-item list-group-item-action">
+        {{ olamide.course_name.sel }}
+    
+  </a> 
+  
+  
+						</div>	{% endfor %}
+  
+						
+
+
+						{% endif %} 
+</div>
+
+
+						<div class="tech-btm">
+							<h4>Popular courses</h4>
+							
+							<ul class="list-group single">
+								 {% if courses %} 
+								 {% for course in courses %}
+									<li class="list-group-item d-flex justify-content-between align-items-center">
+									  {{ course }}
+									  <span class="badge badge-primary badge-pill">4</span>
+									</li>
+									
+									{% endfor %}
+									{% endif %}
+								  </ul>
+						</div>
+<div class="tech-btm">
+							<h4>Registered courses</h4>
+							
+							<ul class="list-group single">
+								 {% if user.registered_courses %} 
+								 {% for i in ok %}
+									<li class="list-group-item d-flex justify-content-between align-items-center">
+									  
+									  {{i}}
+
+									  <span class="badge badge-primary badge-pill">14</span>
+									</li>
+								{% endfor %}
+									{% endif %}
+								  </ul>
+						</div>
+	
+		{% if coursepage.quiz %}
+		<div class="single-gd my-5 tech-btm">
+
+			<h4>Take Quiz on {{ name|title }} </h4>
+
+			<img src='/static/images/s1.jpg'
+		class="img-fluid" alt="quiz">
+
+			
+
+			<button class="btn btn-primary" type="button">
+				<a href="{% url 'question' coursepage.id 0 %}"> Take Quiz </a>
+			</button> 
+
+				<br>
+				<br>
+
+			 <h5> Check What You Scored on {{ name|title }} </h5>
+			 <br>
+
+			 <button type="button" class="btn btn-outline-info">
+				<a href="{% url 'quiz' coursepage.id %}"> Check Score </a>
+			</button>
+
+		</div>
+		{% endif %}
+							
+
+						</div>
+					</div>
+
+				</aside>
+				<!--//right-->
+			</div>
+		</div>
+	</section>
+	<!--//main-->
+
+	<!--footer-->
+
+	{% endblock %}
+
+
+
+

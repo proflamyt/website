@@ -1,0 +1,27 @@
+{% extends "school/base.html" %}
+
+{% block body %}
+
+<div class= "text-center">
+	
+
+	<ul>
+{% for questions in question %}
+<li>
+	
+	{{questions }} , <a style='color: blue' href="{% url 'edit_quest' questions.id  'edit' %}"> Edit</a> ,
+	 <a style='color: red' href="{% url 'edit_quest' questions.id 'delete' %}"> Delete</a>
+</li>
+
+		
+
+
+
+
+{% endfor %}
+
+</ul>
+
+</div>
+<br><br><br><br><br><br><br><br><br><br><br><br><br>
+{% endblock %}
