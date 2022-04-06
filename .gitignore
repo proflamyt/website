@@ -4,3 +4,9 @@ wt_prod-19015/*
 book/*
 *.pdf
 db.sqlite3
+static/aline
+static/wt_prod
+static/newsletter
+static/com
+static/ok
+static/ckeditor
